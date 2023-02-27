@@ -9,7 +9,7 @@ public class PlayerMovementController : MonoBehaviour
 {
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float engineForce;
-    private LaserBeam Laser;
+    [SerializeField] private LaserBeam laserBeam;
 
     private Rigidbody2D rb2D;
     private Transform tr;
@@ -38,10 +38,16 @@ public class PlayerMovementController : MonoBehaviour
             newForce = engineForce * tr.up;
             rb2D.AddForce(newForce);
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Fire();
+        }
+        
     }
     
-    private void Fire()
-    {
-
+    private void Fire() {
+        LaserBeam _laser = Instantiate(laserBeam, tr.position, tr.rotation);
+        _laser.Laser(tr.up);
     }
 }

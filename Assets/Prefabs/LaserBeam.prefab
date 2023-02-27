@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 1533315642775618595}
   - component: {fileID: 5003612615255417909}
   - component: {fileID: 2647894304483278397}
-  m_Layer: 0
-  m_Name: LastBeam
+  - component: {fileID: 6295848324093898415}
+  m_Layer: 6
+  m_Name: LaserBeam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,3 +134,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &6295848324093898415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1533315642775618594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f293a7be6b94fa4795a49bc43e8d977, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

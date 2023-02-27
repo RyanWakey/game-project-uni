@@ -2,13 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class LaserBeam : MonoBehaviour
 {
-    private Rigidbody2D rd2d;
-    float speed = 5f;
+    private Rigidbody2D rb2d;
+    private float speed = 1250f;
     
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
+    }
+    public void Laser(Vector3 direction)
+    {
+        rb2d.AddForce(direction * speed);
     }
 }
