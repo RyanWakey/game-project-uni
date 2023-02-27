@@ -523,8 +523,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1359880493875212481, guid: 6cbde05f569bd6145992821a1c606229, type: 3}
+      propertyPath: laserBeam
+      value: 
+      objectReference: {fileID: 6295848324093898415, guid: d32c13e7245ff5c488cdc4a05ac0820b, type: 3}
+    - target: {fileID: 1359880493875212481, guid: 6cbde05f569bd6145992821a1c606229, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1359880493875212486, guid: 6cbde05f569bd6145992821a1c606229, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1359880493875212486, guid: 6cbde05f569bd6145992821a1c606229, type: 3}
+      propertyPath: m_AngularDrag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1359880493875214138, guid: 6cbde05f569bd6145992821a1c606229, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4652194315843340316, guid: 6cbde05f569bd6145992821a1c606229, type: 3}
       propertyPath: m_Name

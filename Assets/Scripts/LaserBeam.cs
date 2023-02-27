@@ -5,7 +5,7 @@ using UnityEngine;
 public class LaserBeam : MonoBehaviour
 {
     private Rigidbody2D rb2d;
-    private float speed = 1250f;
+    private float speed = 1000f;
     
     private void Awake()
     {
@@ -14,5 +14,6 @@ public class LaserBeam : MonoBehaviour
     public void Laser(Vector3 direction)
     {
         rb2d.AddForce(direction * speed);
+        Debug.Log(direction);
     }
 }
