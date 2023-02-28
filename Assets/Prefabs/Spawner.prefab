@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 3904562187637198035}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -55.76725, y: 16.954197, z: -1.641916}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -44,8 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb4bc5b9dd969d2448257b213cafcdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  asteroid: {fileID: 0}
+  asteroid: {fileID: 4106192271990056401, guid: 0b451ea0813a299479e891525e5f2e83, type: 3}
   spawnRate: 4
-  spawnAmount: 1
   spawnDistance: 0
   enemeyAngleVariance: 20

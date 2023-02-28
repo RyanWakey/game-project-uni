@@ -6,8 +6,7 @@ public class SpawnerController : MonoBehaviour
 {
     [SerializeField] private AsteroidController asteroid;
     [SerializeField] private float spawnRate = 4.0f;
-    [SerializeField] private float spawnAmount = 1f;
-    [SerializeField] private float spawnDistance = 0f;
+    [SerializeField] private float spawnDistance = 15f;
     [SerializeField] private float enemeyAngleVariance = 20.0f;
     // will need ufo to
 
@@ -17,14 +16,14 @@ public class SpawnerController : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating("Spawner", 0f, spawnRate);  
+        InvokeRepeating(nameof(Spawner), 0f, spawnRate);  
     }
 
     // Update is called once per frame
     private void Spawner()
     {
         Vector3 spawnDirection = Random.insideUnitCircle.normalized * spawnDistance;
-        Vector3 spawnPoint = tr.position + spawnDirection;
+        Vector3 spawnPoint = this.transform.position + spawnDirection;
 
         float angleVariance = Random.Range(-enemeyAngleVariance, enemeyAngleVariance);
         Quaternion rotation = Quaternion.AngleAxis(angleVariance, Vector3.forward);

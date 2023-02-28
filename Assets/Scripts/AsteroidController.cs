@@ -26,9 +26,7 @@ public class AsteroidController : MonoBehaviour
     private void Start()
     {
         sprititeRenderer.sprite = sprites[Random.Range(0,sprites.Length)];
-
         tr.localScale = Vector3.one * size;
-   
     }
     public void SetTrajectory(Vector3 direction)
     {
