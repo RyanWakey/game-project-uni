@@ -15,7 +15,6 @@ public class LaserBeam : MonoBehaviour
     public void Laser(Vector3 direction)
     {
         rb2d.AddForce(direction * speed);
-        Debug.Log(direction*speed);
         Destroy(this.gameObject, bulletLifeTime);
     }
 }

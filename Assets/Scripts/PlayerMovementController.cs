@@ -14,6 +14,8 @@ public class PlayerMovementController : MonoBehaviour
     private Rigidbody2D rb2D;
     private Transform tr;
     private Vector2 newForce;
+    private bool inAsteroid = false;
+    private AsteroidController asteroid;
 
     private void Awake()
     {
@@ -43,11 +45,27 @@ public class PlayerMovementController : MonoBehaviour
         {
             Fire();
         }
-        
+
+       
+
     }
-    
+    public void FixedUpdate()
+    {
+        if (inAsteroid)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
     private void Fire() {
         LaserBeam _laser = Instantiate(laserBeam, tr.position, tr.rotation);
         _laser.Laser(tr.up);
     }
+
+    public void InAsteroidChange(bool _inAsteroid)
+    {
+        inAsteroid = _inAsteroid;
+    }
+
+    
 }

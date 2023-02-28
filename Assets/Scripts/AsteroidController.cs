@@ -34,4 +34,5 @@ public class AsteroidController : MonoBehaviour
         rd2d.AddForce(direction * speed);
         Destroy(this.gameObject, asteroidLifeTime);
     }
+
 }
