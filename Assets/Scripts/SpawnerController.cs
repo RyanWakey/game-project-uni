@@ -5,9 +5,9 @@ using UnityEngine;
 public class SpawnerController : MonoBehaviour
 {
     [SerializeField] private AsteroidController asteroid;
-    [SerializeField] private float spawnRate = 4.0f;
-    [SerializeField] private float spawnDistance = 15f;
-    [SerializeField] private float enemeyAngleVariance = 20.0f;
+    [SerializeField] private float spawnRate = 2.0f;
+    [SerializeField] private float spawnDistance = 150.0f;
+    [SerializeField] private float enemeyAngleVariance = 10.0f;
     // will need ufo to
 
     private Transform tr;
@@ -16,7 +16,7 @@ public class SpawnerController : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating(nameof(Spawner), 0f, spawnRate);  
+        InvokeRepeating("Spawner", 0f, spawnRate);  
     }
 
     // Update is called once per frame

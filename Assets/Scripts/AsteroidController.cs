@@ -2,23 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
+
 public class AsteroidController : MonoBehaviour
 {
     [SerializeField] private Sprite[] sprites;
-
+    [SerializeField] private float asteroidLifeTime = 120.0f;
     private SpriteRenderer sprititeRenderer;
 
     private Rigidbody2D rd2d;
 
-    private BoxCollider2D bc2D;
-
-    private float size = 1.2f;
-    private float speed = 500f;
+    private float size = 8f;
+    private float speed = 20.0f;
     private Transform tr;
+
     private void Awake()
     {
         rd2d = GetComponent<Rigidbody2D>();
-        bc2D = GetComponent<BoxCollider2D>();
         sprititeRenderer = rd2d.GetComponent<SpriteRenderer>();
         tr = transform;
 
@@ -27,9 +27,11 @@ public class AsteroidController : MonoBehaviour
     {
         sprititeRenderer.sprite = sprites[Random.Range(0,sprites.Length)];
         tr.localScale = Vector3.one * size;
+        tr.rotation = Quaternion.Euler(0.0f, 0.0f, Random.value * 360.0f);
     }
     public void SetTrajectory(Vector3 direction)
     {
-        rd2d.AddForce(speed * direction);
+        rd2d.AddForce(direction * speed);
+        Destroy(this.gameObject, asteroidLifeTime);
     }
 }

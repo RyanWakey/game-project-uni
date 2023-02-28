@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LaserBeam : MonoBehaviour
 {
+    [SerializeField] private float bulletLifeTime = 5.0f;
     private Rigidbody2D rb2d;
     private float speed = 1000f;
     
@@ -15,5 +16,6 @@ public class LaserBeam : MonoBehaviour
     {
         rb2d.AddForce(direction * speed);
         Debug.Log(direction*speed);
+        Destroy(this.gameObject, bulletLifeTime);
     }
 }

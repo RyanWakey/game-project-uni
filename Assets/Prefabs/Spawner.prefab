@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb4bc5b9dd969d2448257b213cafcdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  asteroid: {fileID: 4106192271990056401, guid: 0b451ea0813a299479e891525e5f2e83, type: 3}
-  spawnRate: 4
-  spawnDistance: 0
-  enemeyAngleVariance: 20
+  asteroid: {fileID: 1466154094939378853, guid: 0b451ea0813a299479e891525e5f2e83, type: 3}
+  spawnRate: 2
+  spawnDistance: 150
+  enemeyAngleVariance: 15
