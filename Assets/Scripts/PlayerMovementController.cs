@@ -15,7 +15,7 @@ public class PlayerMovementController : MonoBehaviour
     private Transform tr;
     private Vector2 newForce;
     private bool inAsteroid = false;
-    private AsteroidController asteroid;
+    private List<AsteroidController> asteroids = new List<AsteroidController>();
 
     private void Awake()
     {
@@ -45,15 +45,22 @@ public class PlayerMovementController : MonoBehaviour
         {
             Fire();
         }
-
        
 
     }
     public void FixedUpdate()
     {
+        
         if (inAsteroid)
         {
-            Destroy(this.gameObject);
+
+            foreach (var item in asteroids)
+            {
+                Destroy(item.gameObject);
+                Destroy(this.gameObject);
+            }
+           
+           
         }
     }
 
@@ -67,5 +74,13 @@ public class PlayerMovementController : MonoBehaviour
         inAsteroid = _inAsteroid;
     }
 
+    public void CollidingAsteroid(AsteroidController colliding)
+    {
+        if (!asteroids.Contains(colliding)) asteroids.Add(colliding);
+    }
     
+    public void CollidedAsteroid(AsteroidController colliding)
+    {
+        if (asteroids.Contains(colliding)) asteroids.Remove(colliding);
+    }
 }
