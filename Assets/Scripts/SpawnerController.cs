@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnerController : MonoBehaviour
 {
     [SerializeField] private AsteroidController asteroid;
-    [SerializeField] private float spawnRate = 2.0f;
+    [SerializeField] private float spawnRate = 0.1f;
     [SerializeField] private float spawnDistance = 150.0f;
     [SerializeField] private float enemeyAngleVariance = 10.0f;
     // will need ufo to
@@ -19,7 +19,7 @@ public class SpawnerController : MonoBehaviour
         InvokeRepeating("Spawner", 0f, spawnRate);  
     }
 
-    // Update is called once per frame
+
     private void Spawner()
     {
         Vector3 spawnDirection = Random.insideUnitCircle.normalized * spawnDistance;

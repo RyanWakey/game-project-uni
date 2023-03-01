@@ -8,11 +8,10 @@ public class AsteroidController : MonoBehaviour
 {
     [SerializeField] private Sprite[] sprites;
     [SerializeField] private float asteroidLifeTime = 120.0f;
+    
     private SpriteRenderer sprititeRenderer;
-
     private Rigidbody2D rd2d;
-
-    public float size = 8f;
+    private float size = 8f;
     private float speed = 20.0f;
     private Transform tr;
 
@@ -37,8 +36,11 @@ public class AsteroidController : MonoBehaviour
 
     public void CreateAsteroidsOnDestruction()
     {
-        AsteroidController asteroids = Instantiate(this, tr.position * (Random.insideUnitCircle * 1.0f), tr.rotation);
-        asteroids.size = size * 0.5f;
-        asteroids.SetTrajectory(Random.insideUnitCircle.normalized);
+        Vector2 position = tr.position;
+        position += Random.insideUnitCircle * 0.5f;
+
+        AsteroidController asteroidSmaller = Instantiate(this, position, tr.rotation);
+        asteroidSmaller.size = size * 0.5f;
+        asteroidSmaller.SetTrajectory(Random.insideUnitCircle.normalized * 2.0f);
     }
 }

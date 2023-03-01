@@ -4,7 +4,6 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 
-
 public class PlayerMovementController : MonoBehaviour
 {
     [SerializeField] private float rotationSpeed;
@@ -16,6 +15,7 @@ public class PlayerMovementController : MonoBehaviour
     private Vector2 newForce;
     private bool inAsteroid = false;
     private List<AsteroidController> asteroids = new List<AsteroidController>();
+    private AsteroidController asteroid;
 
     private void Awake()
     {
@@ -53,6 +53,14 @@ public class PlayerMovementController : MonoBehaviour
         {
             foreach (var item in asteroids)
             {
+                if (item.transform.localScale.x > 6.0f)
+                {
+                    asteroid = item;
+                    
+                    for(int j = 0; j < 2; j++) { 
+                        asteroid.CreateAsteroidsOnDestruction();
+                    }
+                }
                 Destroy(item.gameObject);
                 Destroy(this.gameObject);
             } 
@@ -73,11 +81,11 @@ public class PlayerMovementController : MonoBehaviour
     {
         if (!asteroids.Contains(colliding)) asteroids.Add(colliding);
     }
-    
+
     public void CollidedAsteroid(AsteroidController colliding)
     {
         if (asteroids.Contains(colliding)) asteroids.Remove(colliding);
     }
 
-    
+
 }
