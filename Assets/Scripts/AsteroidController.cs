@@ -12,7 +12,7 @@ public class AsteroidController : MonoBehaviour
 
     private Rigidbody2D rd2d;
 
-    private float size = 8f;
+    public float size = 8f;
     private float speed = 20.0f;
     private Transform tr;
 
@@ -35,4 +35,10 @@ public class AsteroidController : MonoBehaviour
         Destroy(this.gameObject, asteroidLifeTime);
     }
 
+    public void CreateAsteroidsOnDestruction()
+    {
+        AsteroidController asteroids = Instantiate(this, tr.position * (Random.insideUnitCircle * 1.0f), tr.rotation);
+        asteroids.size = size * 0.5f;
+        asteroids.SetTrajectory(Random.insideUnitCircle.normalized);
+    }
 }

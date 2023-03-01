@@ -78,4 +78,6 @@ public class PlayerMovementController : MonoBehaviour
     {
         if (asteroids.Contains(colliding)) asteroids.Remove(colliding);
     }
+
+    
 }

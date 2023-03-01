@@ -31,7 +31,7 @@ public class LaserBeam : MonoBehaviour
                 Destroy(item.gameObject);
                 Destroy(this.gameObject);
             }
-        }
+        }    
     
     }
 
