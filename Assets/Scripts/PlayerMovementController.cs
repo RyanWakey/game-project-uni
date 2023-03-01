@@ -46,21 +46,16 @@ public class PlayerMovementController : MonoBehaviour
             Fire();
         }
        
-
     }
     public void FixedUpdate()
     {
-        
         if (inAsteroid)
         {
-
             foreach (var item in asteroids)
             {
                 Destroy(item.gameObject);
                 Destroy(this.gameObject);
-            }
-           
-           
+            } 
         }
     }
 

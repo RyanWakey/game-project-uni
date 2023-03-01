@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1359880493875212484}
   - component: {fileID: 1359880493875212485}
   - component: {fileID: 1359880493875212486}
-  - component: {fileID: 1359880493875212487}
   - component: {fileID: 1359880493875212481}
   m_Layer: 3
   m_Name: Player
@@ -109,68 +108,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &1359880493875212487
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1359880493875214138}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.37, y: 8.11}
-    newSize: {x: 9.2, y: 9.07}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.15019417, y: 4.1591477}
-      - {x: -0.3851244, y: 3.4532971}
-      - {x: -0.71049404, y: 2.4766238}
-      - {x: -0.7666586, y: 1.2968132}
-      - {x: -0.98100024, y: 1.2768359}
-      - {x: -1.3232971, y: 0.002856493}
-      - {x: -1.7652677, y: -0.13035023}
-      - {x: -1.8691851, y: 1.6505367}
-      - {x: -2.1899045, y: 1.7988282}
-      - {x: -2.3294787, y: 0.20453061}
-      - {x: -2.7587466, y: -1.0825418}
-      - {x: -2.4395578, y: -2.595443}
-      - {x: -2.4135644, y: -3.7328627}
-      - {x: -2.0018249, y: -3.826889}
-      - {x: -1.829764, y: -1.841105}
-      - {x: -0.8847758, y: -2.0330148}
-      - {x: -0.7132712, y: -3.8894486}
-      - {x: 0.81162745, y: -3.9184842}
-      - {x: 0.95225054, y: -2.0869026}
-      - {x: 1.8608398, y: -1.8699856}
-      - {x: 2.0444791, y: -3.7304854}
-      - {x: 2.4475107, y: -3.6313086}
-      - {x: 2.5286467, y: -2.4994678}
-      - {x: 2.7338533, y: -1.1025684}
-      - {x: 2.5830638, y: -0.6439086}
-      - {x: 2.3006167, y: 0.39383495}
-      - {x: 2.2445526, y: 1.637254}
-      - {x: 1.9232496, y: 1.6452653}
-      - {x: 1.8580225, y: 0.9781242}
-      - {x: 1.8275372, y: 0.48182604}
-      - {x: 1.7793878, y: -0.26320416}
-      - {x: 1.3746073, y: 0.02783534}
-      - {x: 1.228745, y: 0.5498509}
-      - {x: 1.0061345, y: 1.3036063}
-      - {x: 0.7511246, y: 1.3014591}
-      - {x: 0.7413614, y: 2.4820888}
-      - {x: 0.17374049, y: 4.164938}
 --- !u!114 &1359880493875212481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,7 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 150
   engineForce: 4
-  laserBeam: {fileID: 0}
+  laserBeam: {fileID: 6932412429616716438, guid: d32c13e7245ff5c488cdc4a05ac0820b, type: 3}
 --- !u!1 &6954593993345193572
 GameObject:
   m_ObjectHideFlags: 0
@@ -196,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8086215815542532504}
   - component: {fileID: 3183273333770349385}
+  - component: {fileID: 6793379056354606939}
   m_Layer: 0
   m_Name: CrashTrigger
   m_TagString: Untagged
@@ -260,7 +198,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnCollisionLeave:
+  OnCollisionExit:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1359880493875212481}
@@ -275,3 +213,67 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!60 &6793379056354606939
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6954593993345193572}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 5.37, y: 8.11}
+    newSize: {x: 9.2, y: 9.07}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.32211745, y: 3.1771865}
+      - {x: -0.5262099, y: 2.5520868}
+      - {x: -0.73609054, y: 1.9762428}
+      - {x: -0.7666586, y: 1.2968132}
+      - {x: -1.0186689, y: 1.0225724}
+      - {x: -1.3232971, y: 0.002856493}
+      - {x: -1.7652677, y: -0.13035023}
+      - {x: -1.851938, y: 1.2883464}
+      - {x: -2.1812809, y: 1.3331553}
+      - {x: -2.3294787, y: 0.20453061}
+      - {x: -2.6638873, y: -1.099789}
+      - {x: -2.4395578, y: -2.595443}
+      - {x: -2.361823, y: -3.198201}
+      - {x: -1.975954, y: -3.2232385}
+      - {x: -1.829764, y: -1.841105}
+      - {x: -0.8847758, y: -2.0330148}
+      - {x: -0.6442825, y: -3.2944221}
+      - {x: 0.6908973, y: -3.349328}
+      - {x: 0.95225054, y: -2.0869026}
+      - {x: 1.8608398, y: -1.8699856}
+      - {x: 2.0099847, y: -3.2993064}
+      - {x: 2.378522, y: -3.2432477}
+      - {x: 2.4510345, y: -2.3269963}
+      - {x: 2.6993592, y: -1.1370628}
+      - {x: 2.5830638, y: -0.6439086}
+      - {x: 2.425315, y: -0.2420283}
+      - {x: 2.2919931, y: 0.37658787}
+      - {x: 2.1496933, y: 1.4389117}
+      - {x: 1.8628846, y: 1.4210522}
+      - {x: 1.6769273, y: 0.9522534}
+      - {x: 1.6033242, y: 0.25761303}
+      - {x: 1.6241634, y: 0.0041267276}
+      - {x: 1.3746073, y: 0.02783534}
+      - {x: 1.228745, y: 0.5498509}
+      - {x: 0.9802637, y: 0.9327924}
+      - {x: 0.7511246, y: 1.3014591}
+      - {x: 0.71853375, y: 1.8999882}
+      - {x: 0.55164266, y: 2.3958533}
+      - {x: 0.21554808, y: 3.2451706}

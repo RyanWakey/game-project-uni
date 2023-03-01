@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class TriggerEnemyCollision : MonoBehaviour
+public class TriggerLaserCollision : MonoBehaviour
 {
     public UnityEvent<bool> OnTriggerChange;
     public UnityEvent<AsteroidController> OnCollisionEnter;
@@ -23,6 +23,4 @@ public class TriggerEnemyCollision : MonoBehaviour
         OnTriggerChange?.Invoke(false);
         if (colliding) OnCollisionExit?.Invoke(colliding);
     }
-
-   
 }
