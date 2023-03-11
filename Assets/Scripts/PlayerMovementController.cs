@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Events;
 
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -11,11 +13,14 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float engineForce;
     [SerializeField] private LaserBeam laserBeam;
+    [SerializeField] private const KeyCode thrustKeyCode = KeyCode.W;
 
     private Rigidbody2D rb2D;
     private Transform tr;
-    private CommandProcessor commandProcessor;
     private Vector2 newForce;
+
+    private CommandProcessor commandProcessor;
+    private Command buttonThrust;
 
     private bool inAsteroid = false;
     private List<AsteroidController> asteroids = new List<AsteroidController>();
@@ -95,5 +100,11 @@ public class PlayerMovementController : MonoBehaviour, IEntity
         if (asteroids.Contains(colliding)) asteroids.Remove(colliding);
     }
 
-
+    public void AssignCommand(Button button, Command command)
+    {
+        if (button == Input.GetKey(thrustKeyCode))
+        {
+            buttonThrust = command;
+        }
+    }
 }
