@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 
-public class PlayerMovementController : MonoBehaviour
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent (typeof(CommandProcessor))]
+
+public class PlayerMovementController : MonoBehaviour, IEntity
 {
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float engineForce;
@@ -12,15 +14,21 @@ public class PlayerMovementController : MonoBehaviour
 
     private Rigidbody2D rb2D;
     private Transform tr;
+    private CommandProcessor commandProcessor;
     private Vector2 newForce;
+
     private bool inAsteroid = false;
     private List<AsteroidController> asteroids = new List<AsteroidController>();
     private AsteroidController asteroid;
+
+    Rigidbody2D IEntity.rb2D => rb2D;
+    Transform IEntity.tr => tr;
 
     private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
         tr = transform;
+        commandProcessor = GetComponent<CommandProcessor>();
     }
 
     public void Update()
