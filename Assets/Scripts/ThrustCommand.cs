@@ -14,10 +14,13 @@ public class ThrustCommand : Command
     {
         Vector2 newForce = engineForce * entity.tr.up;
         entity.rb2D.AddForce(newForce);
+        Debug.Log(newForce);
     }
 
     public override void Undo()
     {
-        
+        Vector2 newForce = engineForce * entity.tr.up;
+        entity.rb2D.AddForce(-newForce);
+        Debug.Log(newForce);
     }
 }

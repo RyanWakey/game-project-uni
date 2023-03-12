@@ -14,13 +14,17 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     [SerializeField] private float engineForce;
     [SerializeField] private LaserBeam laserBeam;
     [SerializeField] private const KeyCode thrustKeyCode = KeyCode.W;
+    [SerializeField] private const KeyCode rotateLeftKeyCode = KeyCode.A;
+    [SerializeField] private const KeyCode rotateRightKeyCode = KeyCode.D;
+    [SerializeField] private const KeyCode undoKey = KeyCode.U;
 
     private Rigidbody2D rb2D;
     private Transform tr;
-    private Vector2 newForce;
 
     private CommandProcessor commandProcessor;
     private Command buttonThrust;
+    private Command buttonRotateLeft;
+    private Command buttonRotateRight;
 
     private bool inAsteroid = false;
     private List<AsteroidController> asteroids = new List<AsteroidController>();
@@ -32,26 +36,30 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
-        tr = transform;
         commandProcessor = GetComponent<CommandProcessor>();
+        tr = transform;
     }
 
     public void Update()
     {
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(thrustKeyCode))
         {
-            rb2D.rotation -= rotationSpeed * Time.deltaTime;
+            commandProcessor.ExecuteCommand(new ThrustCommand(this, engineForce));
+          
         }
 
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(rotateLeftKeyCode))
         {
-            rb2D.rotation += rotationSpeed * Time.deltaTime;
+            commandProcessor.ExecuteCommand(new MoveLeftCommand(this, rotationSpeed));
         }
 
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(rotateRightKeyCode))
         {
-            newForce = engineForce * tr.up;
-            rb2D.AddForce(newForce);
+            commandProcessor.ExecuteCommand(new MoveRightCommand(this, rotationSpeed));
+        }
+        if (Input.GetKey(undoKey))
+        {
+            commandProcessor.UndoCommand();
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -105,6 +113,14 @@ public class PlayerMovementController : MonoBehaviour, IEntity
         if (button == Input.GetKey(thrustKeyCode))
         {
             buttonThrust = command;
+        }
+        else if (button == Input.GetKey(rotateLeftKeyCode))
+        {
+            buttonRotateLeft = command;
+        }
+        else if (button == Input.GetKey(rotateRightKeyCode))
+        {
+            buttonRotateRight = command;
         }
     }
 }

@@ -12,11 +12,11 @@ public class MoveRightCommand : Command
 
     public override void Execute()
     {
-        entity.rb2D.rotation += rotationSpeed * Time.deltaTime;
+        entity.rb2D.rotation -= rotationSpeed * Time.deltaTime;
     }
 
     public override void Undo()
     {
-
+        entity.rb2D.rotation += rotationSpeed * Time.deltaTime;
     }
 }
