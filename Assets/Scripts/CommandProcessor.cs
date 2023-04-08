@@ -17,9 +17,38 @@ public class CommandProcessor : MonoBehaviour
     public void UndoCommand()
     {
         if (currentCommandIndex < 0) return;
+        // Start undoing from the last command
+        int undoIndex = currentCommandIndex;
 
-        commands[currentCommandIndex].Undo();
-        commands.RemoveAt(currentCommandIndex);
+        // Check if the last two commands are simultaneous
+        if (undoIndex > 0)
+        {
+            bool isLastThrust = commands[undoIndex] is ThrustCommand;
+            bool isBeforeLastThrust = commands[undoIndex - 1] is ThrustCommand;
+
+            bool isLastRotation = commands[undoIndex] is MoveLeftCommand || commands[undoIndex] is MoveRightCommand;
+            bool isBeforeLastRotation = commands[undoIndex - 1] is MoveLeftCommand || commands[undoIndex - 1] is MoveRightCommand;
+
+            if ((isLastThrust && isBeforeLastRotation) || (isLastRotation && isBeforeLastThrust))
+            {
+                // Undo both commands
+                commands[undoIndex].Undo();
+                commands.RemoveAt(undoIndex);
+                currentCommandIndex--;
+
+                undoIndex--;
+
+                commands[undoIndex].Undo();
+                commands.RemoveAt(undoIndex);
+                currentCommandIndex--;
+
+                return;
+            }
+        }
+
+        // If not simultaneous, undo the last command only
+        commands[undoIndex].Undo();
+        commands.RemoveAt(undoIndex);
         currentCommandIndex--;
     }
 }

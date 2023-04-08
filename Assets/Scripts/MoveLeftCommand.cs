@@ -5,6 +5,7 @@ using UnityEngine;
 public class MoveLeftCommand : Command
 {
     private float rotationSpeed;
+    private float rotationPerformed;
     public MoveLeftCommand(IEntity entity, float rotationSpeed) : base(entity)
     {
         this.rotationSpeed = rotationSpeed;
@@ -12,11 +13,12 @@ public class MoveLeftCommand : Command
 
     public override void Execute()
     {
-        entity.rb2D.rotation += rotationSpeed * Time.deltaTime;
+        rotationPerformed = rotationSpeed * Time.deltaTime;
+        entity.rb2D.rotation += rotationPerformed;
     }
 
     public override void Undo()
     {
-        entity.rb2D.rotation -= rotationSpeed * Time.deltaTime;
+        entity.rb2D.rotation -= rotationPerformed;
     }
 }

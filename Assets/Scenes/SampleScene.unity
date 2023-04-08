@@ -365,7 +365,7 @@ PrefabInstance:
       objectReference: {fileID: 1466154094939378853, guid: 0b451ea0813a299479e891525e5f2e83, type: 3}
     - target: {fileID: 1486847079573929689, guid: a6c5537f4cc9f5e49933c732a2dff0da, type: 3}
       propertyPath: spawnRate
-      value: 2
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 1486847079573929689, guid: a6c5537f4cc9f5e49933c732a2dff0da, type: 3}
       propertyPath: spawnDistance

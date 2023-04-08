@@ -26,6 +26,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     private Command buttonRotateLeft;
     private Command buttonRotateRight;
 
+
     private bool inAsteroid = false;
     private List<AsteroidController> asteroids = new List<AsteroidController>();
     private AsteroidController asteroid;
@@ -45,8 +46,8 @@ public class PlayerMovementController : MonoBehaviour, IEntity
         if (Input.GetKey(thrustKeyCode))
         {
             commandProcessor.ExecuteCommand(new ThrustCommand(this, engineForce));
-          
         }
+    
 
         if (Input.GetKey(rotateLeftKeyCode))
         {
@@ -57,20 +58,22 @@ public class PlayerMovementController : MonoBehaviour, IEntity
         {
             commandProcessor.ExecuteCommand(new MoveRightCommand(this, rotationSpeed));
         }
-        if (Input.GetKey(undoKey))
-        {
-            commandProcessor.UndoCommand();
-        }
 
         if (Input.GetMouseButtonDown(0))
         {
             Fire();
         }
-       
+
+        if (Input.GetKey(undoKey))
+        {
+            commandProcessor.UndoCommand();
+        }
     }
+        
+    
     public void FixedUpdate()
     {
-        if (inAsteroid)
+      if (inAsteroid)
         {
             foreach (var item in asteroids)
             {
@@ -87,6 +90,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
             } 
         }
     }
+
 
     private void Fire() {
         LaserBeam _laser = Instantiate(laserBeam, tr.position, tr.rotation);
