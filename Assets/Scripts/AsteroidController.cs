@@ -10,18 +10,17 @@ public class AsteroidController : MonoBehaviour
     [SerializeField] private float asteroidLifeTime = 120.0f;
     
     private SpriteRenderer sprititeRenderer;
-    private Rigidbody2D rb2d;
+    private Rigidbody2D rd2d;
     private Transform tr;
 
     private int asteroidPhase = 1;
-    private float size = 25.0f;
-    private float speed = 15.0f;
-   
+    private float size = 30f;
+    private float speed = 800.0f;
 
     private void Awake()
     {
-        rb2d = GetComponent<Rigidbody2D>();
-        sprititeRenderer = rb2d.GetComponent<SpriteRenderer>();
+        rd2d = GetComponent<Rigidbody2D>();
+        sprititeRenderer = rd2d.GetComponent<SpriteRenderer>();
         tr = transform;
 
     }
@@ -29,14 +28,15 @@ public class AsteroidController : MonoBehaviour
     private void Start()
     {
         sprititeRenderer.sprite = sprites[Random.Range(0,sprites.Length)];
-        tr.localScale = Vector2.one * size;
+        tr.localScale = Vector3.one * this.size;
         tr.rotation = Quaternion.Euler(0.0f, 0.0f, Random.value * 360.0f);
-    }
+        
+}
 
-    public void SetTrajectory(Vector2 direction)
+    public void SetTrajectory(Vector3 direction)
     {
-        float speedFactor = 24f / size;
-        rb2d.AddForce(direction * speed * speedFactor);
+        float speedFactor = 20.0f / this.size;
+        rd2d.AddForce(direction * speed * speedFactor);
         Destroy(this.gameObject, asteroidLifeTime);
     }
 
