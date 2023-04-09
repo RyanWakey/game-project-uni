@@ -29,11 +29,11 @@ public class PlayerMovementController : MonoBehaviour, IEntity
 
     private bool inAsteroid = false;
     private List<AsteroidController> asteroids = new List<AsteroidController>();
-    private AsteroidController asteroid;
 
     Rigidbody2D IEntity.rb2D => rb2D;
     Transform IEntity.tr => tr;
-
+    
+    
     private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
@@ -48,7 +48,6 @@ public class PlayerMovementController : MonoBehaviour, IEntity
             commandProcessor.ExecuteCommand(new ThrustCommand(this, engineForce));
         }
     
-
         if (Input.GetKey(rotateLeftKeyCode))
         {
             commandProcessor.ExecuteCommand(new MoveLeftCommand(this, rotationSpeed));
@@ -75,22 +74,20 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     {
       if (inAsteroid)
         {
+            List<AsteroidController> asteroidsToDestroy = new List<AsteroidController>();
+
             foreach (var item in asteroids)
             {
-                if (item.transform.localScale.x > 6.0f)
-                {
-                    asteroid = item;
-                    
-                    for(int j = 0; j < 2; j++) { 
-                        asteroid.CreateAsteroidsOnDestruction();
-                    }
-                }
-                Destroy(item.gameObject);
+                asteroidsToDestroy.Add(item);
+            }
+
+            foreach (var item in asteroidsToDestroy)
+            {
+                item.spawningAsteroids();
                 Destroy(this.gameObject);
-            } 
+            }
         }
     }
-
 
     private void Fire() {
         LaserBeam _laser = Instantiate(laserBeam, tr.position, tr.rotation);

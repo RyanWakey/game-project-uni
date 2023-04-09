@@ -23,6 +23,4 @@ public class TriggerEnemyCollision : MonoBehaviour
         OnTriggerChange?.Invoke(false);
         if (colliding) OnCollisionExit?.Invoke(colliding);
     }
-
-   
 }

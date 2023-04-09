@@ -23,18 +23,21 @@ public class LaserBeam : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(inAsteroid);
         if (inAsteroid)
         {
+            List<AsteroidController> asteroidsToDestroy = new List<AsteroidController>();
             foreach (var item in asteroids)
             {
-                Destroy(item.gameObject);
-                Destroy(this.gameObject);
+                asteroidsToDestroy.Add(item);
             }
+            
+            foreach (var item in asteroidsToDestroy)
+            {
+                item.spawningAsteroids();
+                Destroy(this.gameObject);
+            } 
         }    
-    
     }
-
     public void InAsteroidChange(bool _inAsteroid)
     {
         inAsteroid = _inAsteroid;

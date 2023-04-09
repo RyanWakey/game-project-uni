@@ -10,37 +10,58 @@ public class AsteroidController : MonoBehaviour
     [SerializeField] private float asteroidLifeTime = 120.0f;
     
     private SpriteRenderer sprititeRenderer;
-    private Rigidbody2D rd2d;
-    private float size = 8f;
-    private float speed = 20.0f;
+    private Rigidbody2D rb2d;
     private Transform tr;
+
+    private int asteroidPhase = 1;
+    private float size = 25.0f;
+    private float speed = 15.0f;
+   
 
     private void Awake()
     {
-        rd2d = GetComponent<Rigidbody2D>();
-        sprititeRenderer = rd2d.GetComponent<SpriteRenderer>();
+        rb2d = GetComponent<Rigidbody2D>();
+        sprititeRenderer = rb2d.GetComponent<SpriteRenderer>();
         tr = transform;
 
     }
+
     private void Start()
     {
         sprititeRenderer.sprite = sprites[Random.Range(0,sprites.Length)];
-        tr.localScale = Vector3.one * size;
+        tr.localScale = Vector2.one * size;
         tr.rotation = Quaternion.Euler(0.0f, 0.0f, Random.value * 360.0f);
     }
-    public void SetTrajectory(Vector3 direction)
+
+    public void SetTrajectory(Vector2 direction)
     {
-        rd2d.AddForce(direction * speed);
+        float speedFactor = 24f / size;
+        rb2d.AddForce(direction * speed * speedFactor);
         Destroy(this.gameObject, asteroidLifeTime);
     }
 
-    public void CreateAsteroidsOnDestruction()
+    public void CreateAsteroidsOnDestruction(int newPhase)
     {
         Vector2 position = tr.position;
-        position += Random.insideUnitCircle * 0.5f;
+        position += Random.insideUnitCircle * 10.0f;
 
         AsteroidController asteroidSmaller = Instantiate(this, position, tr.rotation);
         asteroidSmaller.size = size * 0.5f;
-        asteroidSmaller.SetTrajectory(Random.insideUnitCircle.normalized * 2.0f);
+        asteroidSmaller.asteroidPhase += asteroidPhase + 1;
+        asteroidSmaller.SetTrajectory(Random.insideUnitCircle.normalized);
+
     }
+
+    public void spawningAsteroids()
+    {
+        if (asteroidPhase <= 3)
+        {
+            int newPhase = asteroidPhase + 1;
+            for(int i = 0; i < 2; i++)
+            {
+                CreateAsteroidsOnDestruction(newPhase);
+            }
+        }
+        Destroy(this.gameObject);
+    }  
 }
