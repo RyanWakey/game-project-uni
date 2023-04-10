@@ -5,8 +5,10 @@ using UnityEngine;
 public class LaserBeam : MonoBehaviour
 {
     [SerializeField] private float bulletLifeTime = 5.0f;
-    
+    [SerializeField] private ScreenWrapper screenWrapper;
+
     private Rigidbody2D rb2d;
+    private Transform tr;
     private float speed = 1000f;
     private bool inAsteroid = false;
     private List<AsteroidController> asteroids = new List<AsteroidController>();
@@ -14,6 +16,8 @@ public class LaserBeam : MonoBehaviour
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        screenWrapper = FindObjectOfType<ScreenWrapper>();
+        tr = transform;
     }
     public void Laser(Vector3 direction)
     {
@@ -38,6 +42,12 @@ public class LaserBeam : MonoBehaviour
             } 
         }    
     }
+
+    private void FixedUpdate()
+    {
+        screenWrapper.WrapAround(this.tr);
+    }
+
     public void InAsteroidChange(bool _inAsteroid)
     {
         inAsteroid = _inAsteroid;

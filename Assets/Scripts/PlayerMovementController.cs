@@ -26,6 +26,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     private Command buttonRotateLeft;
     private Command buttonRotateRight;
 
+    private ScreenWrapper bounds;
 
     private bool inAsteroid = false;
     private List<AsteroidController> asteroids = new List<AsteroidController>();
@@ -38,6 +39,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     {
         rb2D = GetComponent<Rigidbody2D>();
         commandProcessor = GetComponent<CommandProcessor>();
+        bounds = GetComponent<ScreenWrapper>(); 
         tr = transform;
     }
 
@@ -85,6 +87,8 @@ public class PlayerMovementController : MonoBehaviour, IEntity
             {
                 item.spawningAsteroids();
                 Destroy(this.gameObject);
+                rb2D.velocity = Vector2.zero;
+                rb2D.angularVelocity = 0.0f;  
             }
         }
     }
