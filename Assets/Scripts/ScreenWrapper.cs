@@ -47,7 +47,8 @@ public class ScreenWrapper : MonoBehaviour
 
     public bool isOOB(Vector3 worldPosition)
     {
-        return Mathf.Abs(worldPosition.x) > Mathf.Abs(boxCollider.bounds.min.x) || Mathf.Abs(worldPosition.y) > Mathf.Abs(boxCollider.bounds.min.y);
+        float margin = 100f;
+        return Mathf.Abs(worldPosition.x) > Mathf.Abs(boxCollider.bounds.min.x) - margin || Mathf.Abs(worldPosition.y) > Mathf.Abs(boxCollider.bounds.min.y) - margin;
     }
 
     public Vector2 CalculateWrappedPosition(Vector2 worldPosition)
