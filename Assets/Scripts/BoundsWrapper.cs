@@ -4,18 +4,14 @@ using UnityEngine;
 
 public class BoundsWrapper : MonoBehaviour
 {
-    [SerializeField] private ScreenWrapper screenBounds;
+    [SerializeField] private ScreenWrapperController screenBounds;
 
-    private void Awake()
+    public void TestColliderForWrapping(Collider2D collider)
     {
-        screenBounds.ExitTriggerFired.AddListener(TestColiderForWrapping);
-    }
-    public void TestColiderForWrapping(Collider2D collider)
-    {
-        if (collider.GetComponent<TriggerWrapper>())
+        if (collider.GetComponent<TriggerWrapping>())
         {
-            Vector3 newPos = screenBounds.CalculateWrappedPosition(collider.transform.position);
-            collider.gameObject.transform.position = newPos;    
+            Vector3 newPosition = screenBounds.CalculateWrappedPosition(collider.transform.position);
+            collider.gameObject.transform.position = newPosition;
         }
     }
 }

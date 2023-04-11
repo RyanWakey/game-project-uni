@@ -8,7 +8,7 @@ public class AsteroidController : MonoBehaviour
 {
     [SerializeField] private Sprite[] sprites;
     [SerializeField] private float asteroidLifeTime = 120.0f;
-    [SerializeField] private ScreenWrapper screenWrapper;
+    [SerializeField] ScreenWrapperController screenWrapper;
 
     private SpriteRenderer sprititeRenderer;
     private Rigidbody2D rb2d;
@@ -16,15 +16,16 @@ public class AsteroidController : MonoBehaviour
    
 
     private int asteroidPhase = 1;
-    private float size = 30f;
+    private float size = 25f;
     private float speed = 1000.0f;
 
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
         sprititeRenderer = rb2d.GetComponent<SpriteRenderer>();
+        screenWrapper = FindObjectOfType<ScreenWrapperController>();
         tr = transform;
-        screenWrapper = FindObjectOfType<ScreenWrapper>();
+       
     }
 
     private void Start()
@@ -36,7 +37,7 @@ public class AsteroidController : MonoBehaviour
 
     public void FixedUpdate()
     {
-        screenWrapper.WrapAround(this.tr);
+        screenWrapper.WrapAround(this.tr, this.rb2d);
     }
 
     public void SetTrajectory(Vector3 direction)

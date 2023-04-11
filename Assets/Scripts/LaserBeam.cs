@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class LaserBeam : MonoBehaviour
 {
-    [SerializeField] private float bulletLifeTime = 5.0f;
-    [SerializeField] private ScreenWrapper screenWrapper;
+    [SerializeField] private float bulletLifeTime = 3.0f;
 
+    private ScreenWrapperController screenWrapper;
     private Rigidbody2D rb2d;
     private Transform tr;
     private float speed = 1000f;
@@ -16,7 +16,7 @@ public class LaserBeam : MonoBehaviour
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        screenWrapper = FindObjectOfType<ScreenWrapper>();
+        screenWrapper = FindObjectOfType<ScreenWrapperController>();
         tr = transform;
     }
     public void Laser(Vector3 direction)
@@ -45,7 +45,7 @@ public class LaserBeam : MonoBehaviour
 
     private void FixedUpdate()
     {
-        screenWrapper.WrapAround(this.tr);
+        screenWrapper.WrapAround(this.tr, this.rb2d);
     }
 
     public void InAsteroidChange(bool _inAsteroid)

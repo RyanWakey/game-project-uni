@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent (typeof(CommandProcessor))]
+[RequireComponent(typeof(CommandProcessor))]
 
 public class PlayerMovementController : MonoBehaviour, IEntity
 {
@@ -17,16 +17,16 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     [SerializeField] private const KeyCode rotateLeftKeyCode = KeyCode.A;
     [SerializeField] private const KeyCode rotateRightKeyCode = KeyCode.D;
     [SerializeField] private const KeyCode undoKey = KeyCode.U;
+    [SerializeField] private ScreenWrapperController screenWrapper;
 
     private Rigidbody2D rb2D;
     private Transform tr;
+   
 
     private CommandProcessor commandProcessor;
     private Command buttonThrust;
     private Command buttonRotateLeft;
     private Command buttonRotateRight;
-
-    private ScreenWrapper bounds;
 
     private bool inAsteroid = false;
     private List<AsteroidController> asteroids = new List<AsteroidController>();
@@ -39,12 +39,13 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     {
         rb2D = GetComponent<Rigidbody2D>();
         commandProcessor = GetComponent<CommandProcessor>();
-        bounds = GetComponent<ScreenWrapper>(); 
+        screenWrapper = FindObjectOfType<ScreenWrapperController>(); 
         tr = transform;
     }
 
     public void Update()
     {
+        
         if (Input.GetKey(thrustKeyCode))
         {
             commandProcessor.ExecuteCommand(new ThrustCommand(this, engineForce));
@@ -74,7 +75,8 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     
     public void FixedUpdate()
     {
-      if (inAsteroid)
+        screenWrapper.WrapAround(this.tr, this.rb2D);
+        if (inAsteroid)
         {
             List<AsteroidController> asteroidsToDestroy = new List<AsteroidController>();
 
@@ -86,9 +88,10 @@ public class PlayerMovementController : MonoBehaviour, IEntity
             foreach (var item in asteroidsToDestroy)
             {
                 item.spawningAsteroids();
-                Destroy(this.gameObject);
+                this.gameObject.SetActive(false);
                 rb2D.velocity = Vector2.zero;
-                rb2D.angularVelocity = 0.0f;  
+                rb2D.angularVelocity = 0.0f;
+                
             }
         }
     }

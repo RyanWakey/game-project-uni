@@ -45,6 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   asteroid: {fileID: 1466154094939378853, guid: 0b451ea0813a299479e891525e5f2e83, type: 3}
-  spawnRate: 155
+  spawnRate: 60
   spawnDistance: 150
   enemeyAngleVariance: 15
