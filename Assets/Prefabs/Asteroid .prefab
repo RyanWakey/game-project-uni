@@ -151,3 +151,4 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c91c70643238f124689b4420b2d8e824, type: 3}
   - {fileID: 21300000, guid: 5697f43eddfda5a4e9c5d3cb742a90c0, type: 3}
   asteroidLifeTime: 120
+  screenWrapper: {fileID: 0}

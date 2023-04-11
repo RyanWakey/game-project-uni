@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 public class TriggerEnemyCollision : MonoBehaviour
 {
+    [SerializeField] private PlayerMovementController player;
+
     public UnityEvent<bool> OnTriggerChange;
     public UnityEvent<AsteroidController> OnCollisionEnter;
     public UnityEvent<AsteroidController> OnCollisionExit;
@@ -13,9 +15,14 @@ public class TriggerEnemyCollision : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (player.IsInvulnerable)
+        {
+            return;
+        }
+
         OnTriggerChange?.Invoke(true);
         colliding = collision.gameObject.GetComponentInParent<AsteroidController>();
-        if (colliding) OnCollisionEnter?.Invoke(colliding);
+        if (colliding) OnCollisionEnter?.Invoke(colliding); 
     }
 
     private void OnTriggerExit2D(Collider2D collision)

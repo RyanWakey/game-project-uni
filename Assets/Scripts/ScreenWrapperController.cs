@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
+// Most of the code which deals with the screen wrapping is from this tutorial - https://www.youtube.com/watch?v=1a9ag16PeFw
+// which i slightly changed for my context.
 [RequireComponent(typeof(BoxCollider2D))]
 public class ScreenWrapperController : MonoBehaviour
 {
-        public Camera mainCamera;
-        BoxCollider2D boxCollider;
+        [SerializeField] private Camera mainCamera;
+        [SerializeField] private BoxCollider2D boxCollider;
 
         public UnityEvent<Collider2D> ExitTriggerFired;
 

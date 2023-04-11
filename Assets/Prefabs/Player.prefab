@@ -125,6 +125,10 @@ MonoBehaviour:
   rotationSpeed: 150
   engineForce: 4
   laserBeam: {fileID: 6932412429616716438, guid: d32c13e7245ff5c488cdc4a05ac0820b, type: 3}
+  screenWrapper: {fileID: 3233769946674482983, guid: a4113fa69b7b99d4e8c49c84d9825196, type: 3}
+  normalSortingOrder: 0
+  invulnerableSortingOrder: 1
+  invulnerableDuration: 2
 --- !u!114 &3869931884185020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,6 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c36e1272df5c09468ad5537f582bdf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1359880493875212481}
   OnTriggerChange:
     m_PersistentCalls:
       m_Calls:
