@@ -43,8 +43,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
-        commandProcessor = GetComponent<CommandProcessor>();
-        screenWrapper = FindObjectOfType<ScreenWrapperController>();
+        commandProcessor = GetComponent<CommandProcessor>();    
         spriteRenderer = GetComponent<SpriteRenderer>();
         tr = transform;
     }
@@ -54,6 +53,10 @@ public class PlayerMovementController : MonoBehaviour, IEntity
         if(invulnerabilityTimer > 0)
         {
             invulnerabilityTimer -= Time.deltaTime;
+            if (invulnerabilityTimer <= 0)
+            {
+                spriteRenderer.sortingOrder = normalSortingOrder;
+            }
         }
 
         if (Input.GetKey(thrustKeyCode))
@@ -147,5 +150,6 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     public void EnableInvulnerability()
     {
         invulnerabilityTimer = invulnerableDuration;
+        spriteRenderer.sortingOrder = invulnerableSortingOrder;
     }
 }

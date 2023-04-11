@@ -123,6 +123,22 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!61 &496111437 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 5545717355990282079, guid: a4113fa69b7b99d4e8c49c84d9825196, type: 3}
+  m_PrefabInstance: {fileID: 1955811983977316155}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &496111438 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3233769946674482983, guid: a4113fa69b7b99d4e8c49c84d9825196, type: 3}
+  m_PrefabInstance: {fileID: 1955811983977316155}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e49286ac790f2c3419d1e8d0763a0d2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,8 +319,8 @@ Camera:
   m_GameObject: {fileID: 868186206}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -320,9 +336,9 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
-  orthographic size: 5
-  m_Depth: 0
+  orthographic: 1
+  orthographic size: 56.69235
+  m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -345,7 +361,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 868186206}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -540,7 +556,11 @@ PrefabInstance:
     - target: {fileID: 3233769946674482983, guid: a4113fa69b7b99d4e8c49c84d9825196, type: 3}
       propertyPath: mainCamera
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 868186209}
+    - target: {fileID: 3233769946674482983, guid: a4113fa69b7b99d4e8c49c84d9825196, type: 3}
+      propertyPath: boxCollider
+      value: 
+      objectReference: {fileID: 496111437}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4113fa69b7b99d4e8c49c84d9825196, type: 3}
 --- !u!1001 &4652194314067006435
@@ -565,7 +585,7 @@ PrefabInstance:
     - target: {fileID: 1359880493875212481, guid: 6cbde05f569bd6145992821a1c606229, type: 3}
       propertyPath: screenWrapper
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 496111438}
     - target: {fileID: 1359880493875212484, guid: 6cbde05f569bd6145992821a1c606229, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.8462
@@ -835,5 +855,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
+    - {fileID: 0}
     - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 6cbde05f569bd6145992821a1c606229, type: 3}

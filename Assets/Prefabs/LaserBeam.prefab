@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 1428922041227348484}
   - component: {fileID: 6932412429616716438}
   - component: {fileID: 7895694799825524749}
-  - component: {fileID: 1209615681185165436}
   m_Layer: 6
   m_Name: LaserBeam
   m_TagString: Untagged
@@ -123,7 +122,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletLifeTime: 5
-  screenWrapper: {fileID: 3233769946674482983, guid: a4113fa69b7b99d4e8c49c84d9825196, type: 3}
 --- !u!114 &7895694799825524749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,32 +134,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1a6bbcfc09487549b0b2234918b7356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!61 &1209615681185165436
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2462579103151468571}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.91, y: 2.7}
-    newSize: {x: 4.8, y: 2.7}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.91, y: 2.7}
-  m_EdgeRadius: 0
 --- !u!1 &3701609020746812581
 GameObject:
   m_ObjectHideFlags: 0
