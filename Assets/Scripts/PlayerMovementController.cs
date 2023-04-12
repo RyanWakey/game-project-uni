@@ -10,6 +10,7 @@ using UnityEngine.Events;
 
 public class PlayerMovementController : MonoBehaviour, IEntity
 {
+    [SerializeField] private GameObject childWithPolyCollider;
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float engineForce;
     [SerializeField] private LaserBeam laserBeam;
@@ -21,17 +22,25 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     [SerializeField] private int normalSortingOrder = 0;
     [SerializeField] private int invulnerableSortingOrder = 1;
     [SerializeField] private float invulnerableDuration = 2.0f;
+    [SerializeField] private float shootingtimerCD = 0.1f;
+    [SerializeField] private Sprite destroyedShipSprite;
+    
     private float invulnerabilityTimer;
     public bool IsInvulnerable { get { return invulnerabilityTimer > 0; } }
 
     private Rigidbody2D rb2D;
     private Transform tr;
     private SpriteRenderer spriteRenderer;
+    private Sprite defaultShip;
+    private PolygonCollider2D polygonCollider2D;
 
     private CommandProcessor commandProcessor;
     private Command buttonThrust;
     private Command buttonRotateLeft;
     private Command buttonRotateRight;
+
+    private bool canShoot = true;
+    private bool isDead = false;
 
     private bool inAsteroid = false;
     private List<AsteroidController> asteroids = new List<AsteroidController>();
@@ -45,45 +54,56 @@ public class PlayerMovementController : MonoBehaviour, IEntity
         rb2D = GetComponent<Rigidbody2D>();
         commandProcessor = GetComponent<CommandProcessor>();    
         spriteRenderer = GetComponent<SpriteRenderer>();
+        polygonCollider2D = childWithPolyCollider.GetComponentInChildren<PolygonCollider2D>();  
         tr = transform;
+    }
+
+    private void Start()
+    {
+        defaultShip = spriteRenderer.sprite;
     }
 
     public void Update()
     {
-        if(invulnerabilityTimer > 0)
+        if (!isDead)
         {
-            invulnerabilityTimer -= Time.deltaTime;
-            if (invulnerabilityTimer <= 0)
+            if (invulnerabilityTimer > 0)
             {
-                spriteRenderer.sortingOrder = normalSortingOrder;
+                invulnerabilityTimer -= Time.deltaTime;
+                if (invulnerabilityTimer <= 0)
+                {
+                    spriteRenderer.sortingOrder = normalSortingOrder;
+                }
+            }
+
+            if (Input.GetKey(thrustKeyCode))
+            {
+                commandProcessor.ExecuteCommand(new ThrustCommand(this, engineForce));
+            }
+
+            if (Input.GetKey(rotateLeftKeyCode))
+            {
+                commandProcessor.ExecuteCommand(new MoveLeftCommand(this, rotationSpeed));
+            }
+
+            if (Input.GetKey(rotateRightKeyCode))
+            {
+                commandProcessor.ExecuteCommand(new MoveRightCommand(this, rotationSpeed));
+            }
+
+            if (Input.GetMouseButtonDown(0) && canShoot)
+            {
+                Fire();
+                StartCoroutine(shootingCD());
+            }
+
+            if (Input.GetKey(undoKey))
+            {
+                commandProcessor.UndoCommand();
             }
         }
-
-        if (Input.GetKey(thrustKeyCode))
-        {
-            commandProcessor.ExecuteCommand(new ThrustCommand(this, engineForce));
-        }
-    
-        if (Input.GetKey(rotateLeftKeyCode))
-        {
-            commandProcessor.ExecuteCommand(new MoveLeftCommand(this, rotationSpeed));
-        }
-
-        if (Input.GetKey(rotateRightKeyCode))
-        {
-            commandProcessor.ExecuteCommand(new MoveRightCommand(this, rotationSpeed));
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            Fire();
-        }
-
-        if (Input.GetKey(undoKey))
-        {
-            commandProcessor.UndoCommand();
-        }
     }
+        
         
     
     public void FixedUpdate()
@@ -91,7 +111,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
         screenWrapper.WrapAround(this.tr, this.rb2D);
         if (inAsteroid)
         {
-            List<AsteroidController> asteroidsToDestroy = new List<AsteroidController>();
+            List <AsteroidController> asteroidsToDestroy = new List<AsteroidController>();
 
             foreach (var item in asteroids)
             {
@@ -101,9 +121,12 @@ public class PlayerMovementController : MonoBehaviour, IEntity
             foreach (var item in asteroidsToDestroy)
             {
                 item.spawningAsteroids();
-                this.gameObject.SetActive(false);
-               
+                GameManager.instance.AsteroidDestroyted(item);
+                spriteRenderer.sprite = destroyedShipSprite;
+                polygonCollider2D.enabled = false;
+                StartCoroutine(RemovePlayerAfterDeathTimer(1f));
                 
+                   
             }
         }
     }
@@ -124,6 +147,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
         rb2D.velocity = Vector2.zero;
         rb2D.angularVelocity = 0.0f;
         GameManager.instance.playerDestroyed();
+        isDead = false;
     }
 
     public void CollidedAsteroid(AsteroidController colliding)
@@ -151,5 +175,21 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     {
         invulnerabilityTimer = invulnerableDuration;
         spriteRenderer.sortingOrder = invulnerableSortingOrder;
+    }
+
+    private IEnumerator shootingCD()
+    {
+        canShoot = false;
+        yield return new WaitForSeconds(shootingtimerCD);
+        canShoot = true;
+    }
+
+    private IEnumerator RemovePlayerAfterDeathTimer(float delay)
+    {
+        isDead = true;
+        yield return new WaitForSeconds(delay);
+        this.gameObject.SetActive(false);
+        spriteRenderer.sprite = defaultShip;
+        polygonCollider2D.enabled = true;
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LaserBeam : MonoBehaviour
 {
-    [SerializeField] private float bulletLifeTime = 3.0f;
+    [SerializeField] private float bulletLifeTime = 2.0f;
 
     private ScreenWrapperController screenWrapper;
     private Rigidbody2D rb2d;
@@ -39,6 +39,7 @@ public class LaserBeam : MonoBehaviour
             {
                 item.spawningAsteroids();
                 Destroy(this.gameObject);
+                GameManager.instance.AsteroidDestroyted(item);
             } 
         }    
     }

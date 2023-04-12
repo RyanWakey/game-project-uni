@@ -9,14 +9,15 @@ public class AsteroidController : MonoBehaviour
     [SerializeField] private Sprite[] sprites;
     [SerializeField] private float asteroidLifeTime = 120.0f;
     [SerializeField] ScreenWrapperController screenWrapper;
+    
 
     private SpriteRenderer sprititeRenderer;
     private Rigidbody2D rb2d;
     private Transform tr;
-   
 
-    private int asteroidPhase = 1;
-    private float size = 25f;
+    private float size;
+    private float minAsteroidSize = 12f;
+    private Vector2 asteroidSizeRange = new Vector2(25f, 30f);
     private float speed = 1000.0f;
 
     private void Awake()
@@ -25,7 +26,8 @@ public class AsteroidController : MonoBehaviour
         sprititeRenderer = rb2d.GetComponent<SpriteRenderer>();
         screenWrapper = FindObjectOfType<ScreenWrapperController>();
         tr = transform;
-       
+        size = Random.Range(asteroidSizeRange.x, asteroidSizeRange.y);
+
     }
 
     private void Start()
@@ -47,26 +49,24 @@ public class AsteroidController : MonoBehaviour
         Destroy(this.gameObject, asteroidLifeTime);
     }
 
-    public void CreateAsteroidsOnDestruction(int newPhase)
+    public void CreateAsteroidsOnDestruction()
     {
         Vector2 position = tr.position;
         position += Random.insideUnitCircle * 10.0f;
 
         AsteroidController asteroidSmaller = Instantiate(this, position, tr.rotation);
         asteroidSmaller.size = size * 0.5f;
-        asteroidSmaller.asteroidPhase += asteroidPhase + 1;
         asteroidSmaller.SetTrajectory(Random.insideUnitCircle.normalized);
 
     }
 
     public void spawningAsteroids()
     {
-        if (asteroidPhase <= 3)
+        if (size > minAsteroidSize)
         {
-            int newPhase = asteroidPhase + 1;
             for(int i = 0; i < 2; i++)
             {
-                CreateAsteroidsOnDestruction(newPhase);
+                CreateAsteroidsOnDestruction();
             }
         }
         Destroy(this.gameObject);
