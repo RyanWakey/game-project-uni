@@ -24,7 +24,10 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     [SerializeField] private float invulnerableDuration = 2.0f;
     [SerializeField] private float shootingtimerCD = 0.1f;
     [SerializeField] private Sprite destroyedShipSprite;
-    
+    [SerializeField] private ParticleSystem thrustParticleEffect;
+    [SerializeField] private AudioClip thurstSoundEffect;
+    private AudioSource thrustSource;
+
     private float invulnerabilityTimer;
     public bool IsInvulnerable { get { return invulnerabilityTimer > 0; } }
 
@@ -55,6 +58,8 @@ public class PlayerMovementController : MonoBehaviour, IEntity
         commandProcessor = GetComponent<CommandProcessor>();    
         spriteRenderer = GetComponent<SpriteRenderer>();
         polygonCollider2D = childWithPolyCollider.GetComponentInChildren<PolygonCollider2D>();  
+        thrustSource = gameObject.AddComponent<AudioSource>();
+        thrustSource.volume = 0.5f;
         tr = transform;
     }
 
@@ -65,7 +70,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
 
     public void Update()
     {
-        if (!isDead)
+        if (isDead == false)
         {
             if (invulnerabilityTimer > 0)
             {
@@ -79,9 +84,29 @@ public class PlayerMovementController : MonoBehaviour, IEntity
             if (Input.GetKey(thrustKeyCode))
             {
                 commandProcessor.ExecuteCommand(new ThrustCommand(this, engineForce));
+                if (!thrustSource.isPlaying)
+                {
+                    thrustSource.clip = thurstSoundEffect;
+                    thrustSource.Play();
+                }
+                if (!thrustParticleEffect.isPlaying)
+                {
+                    thrustParticleEffect.Play();
+                }
+
+            }  else
+            {
+                if (thrustSource.isPlaying)
+                {
+                    thrustSource.Stop();
+                }
+                if (thrustParticleEffect.isPlaying)
+                {
+                    thrustParticleEffect.Stop();
+                }
             }
 
-            if (Input.GetKey(rotateLeftKeyCode))
+                if (Input.GetKey(rotateLeftKeyCode))
             {
                 commandProcessor.ExecuteCommand(new MoveLeftCommand(this, rotationSpeed));
             }
@@ -147,7 +172,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
         rb2D.velocity = Vector2.zero;
         rb2D.angularVelocity = 0.0f;
         GameManager.instance.playerDestroyed();
-        isDead = false;
+        isDead = true;
     }
 
     public void CollidedAsteroid(AsteroidController colliding)
@@ -186,10 +211,10 @@ public class PlayerMovementController : MonoBehaviour, IEntity
 
     private IEnumerator RemovePlayerAfterDeathTimer(float delay)
     {
-        isDead = true;
         yield return new WaitForSeconds(delay);
         this.gameObject.SetActive(false);
         spriteRenderer.sprite = defaultShip;
         polygonCollider2D.enabled = true;
+        isDead = false;
     }
 }

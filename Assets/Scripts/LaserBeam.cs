@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LaserBeam : MonoBehaviour
-{
+{   
     [SerializeField] private float bulletLifeTime = 2.0f;
+    [SerializeField] private AudioClip laserSoundEffect;
+    private AudioSource laserSource;
 
     private ScreenWrapperController screenWrapper;
     private Rigidbody2D rb2d;
@@ -17,11 +19,13 @@ public class LaserBeam : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         screenWrapper = FindObjectOfType<ScreenWrapperController>();
+        laserSource = gameObject.AddComponent<AudioSource>();
         tr = transform;
     }
     public void Laser(Vector3 direction)
     {
         rb2d.AddForce(direction * speed);
+        laserSource.PlayOneShot(laserSoundEffect);
         Destroy(this.gameObject, bulletLifeTime);
     }
 

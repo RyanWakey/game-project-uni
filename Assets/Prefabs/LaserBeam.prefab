@@ -122,6 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletLifeTime: 5
+  laserSoundEffect: {fileID: 8300000, guid: 36c3774a4b9108943b87bad870fc3c37, type: 3}
 --- !u!114 &7895694799825524749
 MonoBehaviour:
   m_ObjectHideFlags: 0

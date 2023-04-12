@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private PlayerMovementController player;
     [SerializeField] private int lives = 3;
     [SerializeField] private ParticleSystem asteroidExplosion;
-    [SerializeField] private Text livesText;
+    [SerializeField] private TextMeshProUGUI livesText;
 
     private float respawnTime = 3.0f;
     public static GameManager instance {  get; private set; }
@@ -22,7 +23,12 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
     }
-    
+
+    private void Start()
+    {
+        UpdateLivesText();
+    }
+
     public void AsteroidDestroyted(AsteroidController asteroid)
     {
         this.asteroidExplosion.transform.position = asteroid.transform.position;
