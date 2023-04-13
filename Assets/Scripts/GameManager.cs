@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int lives = 3;
     [SerializeField] private ParticleSystem asteroidExplosion;
     [SerializeField] private TextMeshProUGUI livesText;
+    
 
     private float respawnTime = 3.0f;
     public static GameManager instance {  get; private set; }

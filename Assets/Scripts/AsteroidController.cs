@@ -9,7 +9,8 @@ public class AsteroidController : MonoBehaviour
     [SerializeField] private Sprite[] sprites;
     [SerializeField] private float asteroidLifeTime = 120.0f;
     [SerializeField] ScreenWrapperController screenWrapper;
-    
+    [SerializeField] private AudioClip asteroidDestroyedSoundEffect;
+    private AudioSource asteroidSource;
 
     private SpriteRenderer sprititeRenderer;
     private Rigidbody2D rb2d;
@@ -25,6 +26,7 @@ public class AsteroidController : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         sprititeRenderer = rb2d.GetComponent<SpriteRenderer>();
         screenWrapper = FindObjectOfType<ScreenWrapperController>();
+        asteroidSource = gameObject.AddComponent<AudioSource>();
         tr = transform;
         size = Random.Range(asteroidSizeRange.x, asteroidSizeRange.y);
 
@@ -35,6 +37,8 @@ public class AsteroidController : MonoBehaviour
         sprititeRenderer.sprite = sprites[Random.Range(0,sprites.Length)];
         tr.localScale = Vector3.one * this.size;
         tr.rotation = Quaternion.Euler(0.0f, 0.0f, Random.value * 360.0f);
+        asteroidSource.clip = asteroidDestroyedSoundEffect;
+
     }
 
     public void FixedUpdate()
@@ -70,5 +74,6 @@ public class AsteroidController : MonoBehaviour
             }
         }
         Destroy(this.gameObject);
+        asteroidSource.Play();
     }  
 }
