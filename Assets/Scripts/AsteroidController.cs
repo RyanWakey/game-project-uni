@@ -73,7 +73,8 @@ public class AsteroidController : MonoBehaviour
                 CreateAsteroidsOnDestruction();
             }
         }
-        Destroy(this.gameObject);
         asteroidSource.Play();
+        Destroy(this.gameObject);
+       
     }  
 }
