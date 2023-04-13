@@ -7,7 +7,7 @@ using UnityEngine;
 public class AsteroidController : MonoBehaviour
 {
     [SerializeField] private Sprite[] sprites;
-    [SerializeField] private float asteroidLifeTime = 120.0f;
+    [SerializeField] private float asteroidLifeTime = 80.0f;
     [SerializeField] ScreenWrapperController screenWrapper;
     [SerializeField] private AudioClip asteroidDestroyedSoundEffect;
     private AudioSource asteroidSource;

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8066588784082793740}
   - component: {fileID: 1296371407518535126}
   - component: {fileID: 1304275904001553065}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: UFO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 5f6d05bd1a325eb4fa8811a8ac75f6bd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -153,3 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57879ceab10b8bb408fd261f13026e5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 1200
+  laser: {fileID: 6932412429616716438, guid: d32c13e7245ff5c488cdc4a05ac0820b, type: 3}
+  shootingtimerCD: 8
+  screenWrapper: {fileID: 3233769946674482983, guid: a4113fa69b7b99d4e8c49c84d9825196, type: 3}
+  UFOLifeTime: 80

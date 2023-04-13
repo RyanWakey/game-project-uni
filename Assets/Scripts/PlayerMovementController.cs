@@ -48,6 +48,9 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     private bool inAsteroid = false;
     private List<AsteroidController> asteroids = new List<AsteroidController>();
 
+    private bool inUFO = false;
+    private List<UFOController> ufos = new List<UFOController>();
+
     Rigidbody2D IEntity.rb2D => rb2D;
     Transform IEntity.tr => tr;
     
@@ -154,11 +157,28 @@ public class PlayerMovementController : MonoBehaviour, IEntity
                    
             }
         }
+
+        if (inUFO)
+        {
+            List<UFOController> UFOsToDestroy = new List<UFOController>();
+
+            foreach (var item in ufos)
+            {
+                UFOsToDestroy.Add(item);
+            }
+
+            foreach (var item in UFOsToDestroy)
+            {
+                Destroy(item);
+            }
+        }
+
     }
 
     private void Fire() {
         LaserBeam _laser = Instantiate(laserBeam, tr.position, tr.rotation);
-        _laser.Laser(tr.up);
+        _laser.laserType = LaserBeam.LaserType.PlayerLaser;
+        _laser.Laser(tr.up, Color.blue);
     }
 
     public void InAsteroidChange(bool _inAsteroid)
@@ -178,6 +198,21 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     public void CollidedAsteroid(AsteroidController colliding)
     {
         if (asteroids.Contains(colliding)) asteroids.Remove(colliding);
+    }
+
+    public void InUFOChange(bool _inUFO)
+    {
+        inUFO = _inUFO;
+    }
+
+    public void ColldingUFO(UFOController colliding)
+    {
+        if (!ufos.Contains(colliding)) ufos.Add(colliding);
+    }
+
+    public void CollidedUFO(UFOController colliding)
+    {
+        if (ufos.Contains(colliding)) ufos.Remove(colliding);
     }
 
     public void AssignCommand(Button button, Command command)

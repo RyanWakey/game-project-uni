@@ -5,10 +5,12 @@ using UnityEngine;
 public class SpawnerController : MonoBehaviour
 {
     [SerializeField] private AsteroidController asteroid;
-    [SerializeField] private float spawnRate;
-    [SerializeField] private float spawnDistance = 150.0f;
+    [SerializeField] private UFOController UFO;
+    [SerializeField] private float asteroidSpawnRate;
+    [SerializeField] private float UFOSpawnRate;
+    [SerializeField] private float spawnDistance;
     [SerializeField] private float enemeyAngleVariance = 10.0f;
-    // will need ufo to
+
 
     private Transform tr;
    
@@ -16,11 +18,12 @@ public class SpawnerController : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating("Spawner", 0f, spawnRate);  
+        InvokeRepeating("AsteroidSpawner", 0f, asteroidSpawnRate);
+        InvokeRepeating("UFOSpawner", 30f, UFOSpawnRate);
     }
 
 
-    private void Spawner()
+    private void AsteroidSpawner()
     {
         Vector3 spawnDirection = Random.insideUnitCircle.normalized * spawnDistance;
         Vector3 spawnPoint = this.transform.position + spawnDirection;
@@ -32,5 +35,12 @@ public class SpawnerController : MonoBehaviour
         asteroid.SetTrajectory(-spawnDirection.normalized);
     }
 
-   
+    private void UFOSpawner()
+    {
+        Vector3 spawnDirection = Random.insideUnitCircle.normalized * spawnDistance;
+        Vector3 spawnPoint = this.transform.position + spawnDirection;
+
+        UFOController UFO = Instantiate(this.UFO, spawnPoint, Quaternion.identity);
+        UFO.SetTrajectory(-spawnDirection.normalized);
+    }
 }

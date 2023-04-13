@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class TriggerLaserCollision : MonoBehaviour
+public class TriggerLaserPlayerUFO : MonoBehaviour
 {
     public UnityEvent<bool> OnTriggerChange;
-    public UnityEvent<AsteroidController> OnCollisionEnter;
-    public UnityEvent<AsteroidController> OnCollisionExit;
+    public UnityEvent<UFOController> OnCollisionEnter;
+    public UnityEvent<UFOController> OnCollisionExit;
 
-    private AsteroidController colliding;
+    private UFOController colliding;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -17,10 +17,9 @@ public class TriggerLaserCollision : MonoBehaviour
         if (laser != null && laser.laserType == LaserBeam.LaserType.PlayerLaser)
         {
             OnTriggerChange?.Invoke(true);
-            colliding = collision.gameObject.GetComponentInParent<AsteroidController>();
+            colliding = collision.gameObject.GetComponentInParent<UFOController>();
             if (colliding) OnCollisionEnter?.Invoke(colliding);
         }
-          
     }
 
     private void OnTriggerExit2D(Collider2D collision)
