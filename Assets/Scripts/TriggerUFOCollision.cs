@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 public class TriggerUFOCollision : MonoBehaviour
 {
+    [SerializeField] private PlayerMovementController player;
+
     public UnityEvent<bool> OnTriggerChange;
     public UnityEvent<UFOController> OnCollisionEnter;
     public UnityEvent<UFOController> OnCollisionExit;
@@ -13,9 +15,14 @@ public class TriggerUFOCollision : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-          OnTriggerChange?.Invoke(true);
-          colliding = collision.gameObject.GetComponentInParent<UFOController>();
-          if (colliding) OnCollisionEnter?.Invoke(colliding);
+        if (player.IsInvulnerable)
+        {
+            return;
+        }
+
+        OnTriggerChange?.Invoke(true);
+        colliding = collision.gameObject.GetComponentInParent<UFOController>();
+        if (colliding) OnCollisionEnter?.Invoke(colliding);
         
     }
 

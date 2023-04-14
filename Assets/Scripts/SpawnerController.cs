@@ -19,7 +19,7 @@ public class SpawnerController : MonoBehaviour
     private void Start()
     {
         InvokeRepeating("AsteroidSpawner", 0f, asteroidSpawnRate);
-        InvokeRepeating("UFOSpawner", 30f, UFOSpawnRate);
+        InvokeRepeating("UFOSpawner", 15f, UFOSpawnRate);
     }
 
 

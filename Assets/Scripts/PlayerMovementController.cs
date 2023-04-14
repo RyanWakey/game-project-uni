@@ -20,7 +20,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     [SerializeField] private const KeyCode undoKey = KeyCode.U;
     [SerializeField] private ScreenWrapperController screenWrapper;
     [SerializeField] private int normalSortingOrder = 0;
-    [SerializeField] private int invulnerableSortingOrder = 1;
+    [SerializeField] private int invulnerableSortingOrder = 3;
     [SerializeField] private float invulnerableDuration = 2.0f;
     [SerializeField] private float shootingtimerCD = 0.1f;
     [SerializeField] private Sprite destroyedShipSprite;
@@ -121,7 +121,6 @@ public class PlayerMovementController : MonoBehaviour, IEntity
 
             if (Input.GetMouseButtonDown(0) && canShoot)
             {
-                Fire();
                 StartCoroutine(shootingCD());
             }
 
@@ -137,6 +136,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     public void FixedUpdate()
     {
         screenWrapper.WrapAround(this.tr, this.rb2D);
+
         if (inAsteroid)
         {
             List <AsteroidController> asteroidsToDestroy = new List<AsteroidController>();
@@ -150,11 +150,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
             {
                 item.spawningAsteroids();
                 GameManager.instance.AsteroidDestroyted(item);
-                spriteRenderer.sprite = destroyedShipSprite;
-                polygonCollider2D.enabled = false;
-                StartCoroutine(RemovePlayerAfterDeathTimer(1f));
-                
-                   
+                playerHasCollided();
             }
         }
 
@@ -169,7 +165,9 @@ public class PlayerMovementController : MonoBehaviour, IEntity
 
             foreach (var item in UFOsToDestroy)
             {
-                Destroy(item);
+                Destroy(item.gameObject);
+                GameManager.instance.asteroidSound();
+                playerHasCollided();
             }
         }
 
@@ -178,6 +176,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     private void Fire() {
         LaserBeam _laser = Instantiate(laserBeam, tr.position, tr.rotation);
         _laser.laserType = LaserBeam.LaserType.PlayerLaser;
+        GameManager.instance.laserSound();
         _laser.Laser(tr.up, Color.blue);
     }
 
@@ -189,10 +188,6 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     public void CollidingAsteroid(AsteroidController colliding)
     {
         if (!asteroids.Contains(colliding)) asteroids.Add(colliding);
-        rb2D.velocity = Vector2.zero;
-        rb2D.angularVelocity = 0.0f;
-        GameManager.instance.playerDestroyed();
-        isDead = true;
     }
 
     public void CollidedAsteroid(AsteroidController colliding)
@@ -205,7 +200,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
         inUFO = _inUFO;
     }
 
-    public void ColldingUFO(UFOController colliding)
+    public void CollidingUFO(UFOController colliding)
     {
         if (!ufos.Contains(colliding)) ufos.Add(colliding);
     }
@@ -213,6 +208,14 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     public void CollidedUFO(UFOController colliding)
     {
         if (ufos.Contains(colliding)) ufos.Remove(colliding);
+    }
+
+    private IEnumerator shootingCD()
+    {
+        Fire();
+        canShoot = false;
+        yield return new WaitForSeconds(shootingtimerCD);
+        canShoot = true;
     }
 
     public void AssignCommand(Button button, Command command)
@@ -237,11 +240,15 @@ public class PlayerMovementController : MonoBehaviour, IEntity
         spriteRenderer.sortingOrder = invulnerableSortingOrder;
     }
 
-    private IEnumerator shootingCD()
+    public void playerHasCollided()
     {
-        canShoot = false;
-        yield return new WaitForSeconds(shootingtimerCD);
-        canShoot = true;
+        rb2D.velocity = Vector2.zero;
+        rb2D.angularVelocity = 0.0f;
+        GameManager.instance.playerDestroyed();
+        isDead = true;
+        spriteRenderer.sprite = destroyedShipSprite;
+        polygonCollider2D.enabled = false;
+        StartCoroutine(RemovePlayerAfterDeathTimer(1f));
     }
 
     private IEnumerator RemovePlayerAfterDeathTimer(float delay)

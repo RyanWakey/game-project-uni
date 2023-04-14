@@ -56,6 +56,7 @@ public class UFOController : MonoBehaviour
     private IEnumerator shootingCD()
     {
         Fire();
+        GameManager.instance.laserSound();
         canShoot = false;
         yield return new WaitForSeconds(shootingtimerCD);
         canShoot = true;

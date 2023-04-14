@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 public class TriggerLaserUFOLaserCollision : MonoBehaviour
 {
+    [SerializeField] private PlayerMovementController player;
+
     public UnityEvent<bool> OnTriggerChange;
     public UnityEvent<PlayerMovementController> OnCollisionEnter;
     public UnityEvent<PlayerMovementController> OnCollisionExit;
@@ -13,7 +15,12 @@ public class TriggerLaserUFOLaserCollision : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        LaserBeam laser = collision.GetComponentInParent<LaserBeam>();
+        if (player.IsInvulnerable)
+        {
+            return;
+        }
+
+        LaserBeam laser = GetComponentInParent<LaserBeam>();
         if (laser != null && laser.laserType == LaserBeam.LaserType.UFOlaser)
         {
             OnTriggerChange?.Invoke(true);

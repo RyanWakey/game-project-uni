@@ -5632,7 +5632,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1486847079573929689, guid: a6c5537f4cc9f5e49933c732a2dff0da, type: 3}
       propertyPath: UFOSpawnRate
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1486847079573929689, guid: a6c5537f4cc9f5e49933c732a2dff0da, type: 3}
       propertyPath: spawnDistance
@@ -5640,7 +5640,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1486847079573929689, guid: a6c5537f4cc9f5e49933c732a2dff0da, type: 3}
       propertyPath: asteroidSpawnRate
-      value: 3
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 1486847079573929689, guid: a6c5537f4cc9f5e49933c732a2dff0da, type: 3}
       propertyPath: enemeyAngleVariance
@@ -6291,6 +6291,10 @@ PrefabInstance:
     - target: {fileID: 6793379056354606939, guid: 6cbde05f569bd6145992821a1c606229, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6954593993345193572, guid: 6cbde05f569bd6145992821a1c606229, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}

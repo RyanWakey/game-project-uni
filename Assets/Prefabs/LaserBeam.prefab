@@ -187,6 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13dc59c62a65fbe4c86c4f180f0db371, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1359880493875212481, guid: 6cbde05f569bd6145992821a1c606229, type: 3}
   OnTriggerChange:
     m_PersistentCalls:
       m_Calls:
@@ -353,7 +354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f293a7be6b94fa4795a49bc43e8d977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletLifeTime: 3
+  bulletLifeTime: 1
   laserSoundEffect: {fileID: 8300000, guid: 36c3774a4b9108943b87bad870fc3c37, type: 3}
   laserType: 0
 --- !u!114 &7895694799825524749

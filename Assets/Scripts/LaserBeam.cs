@@ -5,8 +5,6 @@ using UnityEngine;
 public class LaserBeam : MonoBehaviour
 {   
     [SerializeField] private float bulletLifeTime = 0.5f;
-    [SerializeField] private AudioClip laserSoundEffect;
-    private AudioSource laserSource;
 
     public LaserType laserType;
     private ScreenWrapperController screenWrapper;
@@ -35,7 +33,6 @@ public class LaserBeam : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         screenWrapper = FindObjectOfType<ScreenWrapperController>();
-        laserSource = gameObject.AddComponent<AudioSource>();
         spriteRenderer = GetComponent<SpriteRenderer>(); 
         tr = transform;
     }
@@ -43,7 +40,6 @@ public class LaserBeam : MonoBehaviour
     public void Laser(Vector3 direction, Color laserColour)
     {
         rb2d.AddForce(direction * speed);
-        laserSource.PlayOneShot(laserSoundEffect);
         spriteRenderer.color = laserColour;
         Destroy(this.gameObject, bulletLifeTime);
     }
@@ -65,6 +61,7 @@ public class LaserBeam : MonoBehaviour
                 GameManager.instance.AsteroidDestroyted(item);
             } 
         }
+
         if (inPlayer)
         {
             List<PlayerMovementController> playersToDestroy = new List<PlayerMovementController>();
@@ -75,10 +72,11 @@ public class LaserBeam : MonoBehaviour
 
             foreach (var item in playersToDestroy)
             {
-                Destroy(item.gameObject);
+                item.playerHasCollided();
                 Destroy(this.gameObject);
             }
         }
+
         if (inUFO)
         {
             List<UFOController> ufosToDestroy = new List<UFOController>();
@@ -89,8 +87,10 @@ public class LaserBeam : MonoBehaviour
 
             foreach (var item in ufosToDestroy)
             {
+               GameManager.instance.UFODestroyed(item);
                Destroy(item.gameObject); 
                Destroy(this.gameObject);
+               
                 
             }
         }
