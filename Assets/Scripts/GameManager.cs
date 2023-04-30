@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int lives = 3;
     [SerializeField] private ParticleSystem asteroidExplosion;
     [SerializeField] private TextMeshProUGUI livesText;
+
+    private string sceneName;
 
     [SerializeField] private AudioClip laserSoundEffect;
     private AudioSource laserSource;
@@ -22,6 +25,8 @@ public class GameManager : MonoBehaviour
 
     public void Awake()
     {
+        Scene currentScene = SceneManager.GetActiveScene();
+        string sceneName = currentScene.name;
         laserSource = gameObject.AddComponent<AudioSource>();
         asteroidSource = gameObject.AddComponent<AudioSource>();
 
@@ -35,7 +40,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        UpdateLivesText();
+        if(sceneName == "Game")
+        {
+            UpdateLivesText();
+        }
+           
     }
 
     public void AsteroidDestroyted(AsteroidController asteroid)
