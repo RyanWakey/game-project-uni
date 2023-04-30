@@ -5,14 +5,12 @@ using UnityEngine;
 public class LaserBeam : MonoBehaviour
 {   
     [SerializeField] private float bulletLifeTime = 0.5f;
-
+    [SerializeField] private float speed = 1000f;
     public LaserType laserType;
     private ScreenWrapperController screenWrapper;
     private Rigidbody2D rb2d;
     private Transform tr;
     private SpriteRenderer spriteRenderer;
-
-    private float speed = 1000f;
 
     private bool inAsteroid = false;
     private List<AsteroidController> asteroids = new List<AsteroidController>();
