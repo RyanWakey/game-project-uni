@@ -44,7 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7813fa5dbeda9064b978ba29c3aa5b3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   lives: 3
-  asteroidExplosion: {fileID: 0}
+  asteroidExplosion: {fileID: 6954905254452364143, guid: bf8de93f7333e4b448fd1b27b81a2680, type: 3}
   livesText: {fileID: 0}
+  laserSoundEffect: {fileID: 8300000, guid: 36c3774a4b9108943b87bad870fc3c37, type: 3}
+  asteroidDestroyedSoundEffect: {fileID: 8300000, guid: 9714e8943c5b2f24e8fa6c3ffd88ab9b, type: 3}

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,12 +8,14 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private PlayerMovementController player;
+    [SerializeField] private PlayerMovementController playerPrefab;
     [SerializeField] private int lives = 3;
     [SerializeField] private ParticleSystem asteroidExplosion;
     [SerializeField] private TextMeshProUGUI livesText;
 
     private string sceneName;
+    private PlayerMovementController player;
+    public static bool loadPlayer = false;
 
     [SerializeField] private AudioClip laserSoundEffect;
     private AudioSource laserSource;
@@ -26,26 +29,22 @@ public class GameManager : MonoBehaviour
     public void Awake()
     {
         Scene currentScene = SceneManager.GetActiveScene();
-        string sceneName = currentScene.name;
+        sceneName = currentScene.name;
         laserSource = gameObject.AddComponent<AudioSource>();
         asteroidSource = gameObject.AddComponent<AudioSource>();
-
-        if (instance)
+        player = FindAnyObjectByType<PlayerMovementController>();
+        if (instance != null)
+        { 
             Destroy(gameObject);
-        else
+            return;
+        } else
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
+
     }
 
-    private void Start()
-    {
-        if(sceneName == "Game")
-        {
-            UpdateLivesText();
-        }
-           
-    }
 
     public void AsteroidDestroyted(AsteroidController asteroid)
     {
@@ -94,4 +93,29 @@ public class GameManager : MonoBehaviour
     {
         asteroidSource.PlayOneShot(asteroidDestroyedSoundEffect);
     }
+
+   
+    
+    public void LoadScene(string sceneName)
+    {
+        if(player != null)
+        {
+            Destroy(player.gameObject);
+        }
+        SceneManager.LoadScene(sceneName);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Game")
+        {
+            player = FindAnyObjectByType<PlayerMovementController>();
+            livesText = GameObject.Find("LivesText").GetComponent<TextMeshProUGUI>();
+            UpdateLivesText();
+        }
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+    
 }

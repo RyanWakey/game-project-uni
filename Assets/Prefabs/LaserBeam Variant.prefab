@@ -77,7 +77,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6932412429616716438, guid: d32c13e7245ff5c488cdc4a05ac0820b, type: 3}
       propertyPath: bulletLifeTime
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d32c13e7245ff5c488cdc4a05ac0820b, type: 3}

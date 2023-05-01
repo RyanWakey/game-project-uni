@@ -7,15 +7,15 @@ public class TriggerMenuButton : MonoBehaviour
 {
     [SerializeField] private UnityEvent onTrigger;
 
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        LaserBeam laser = collision.GetComponent<LaserBeam>();
-        onTrigger?.Invoke();
-        Destroy(collision.gameObject);
-
+        LaserBeam laser = collision.GetComponentInParent<LaserBeam>();
+        if (laser != null)
+        {
+            onTrigger?.Invoke();
+            Destroy(laser.gameObject);
+        }
     }
-
 }
   
 
