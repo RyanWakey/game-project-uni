@@ -555,6 +555,14 @@ PrefabInstance:
       propertyPath: screenWrapper
       value: 
       objectReference: {fileID: 768558485}
+    - target: {fileID: 2119500280940502174, guid: b69f2784f2bdbd04fac779d93c624610, type: 3}
+      propertyPath: thrustKeyCode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2119500280940502174, guid: b69f2784f2bdbd04fac779d93c624610, type: 3}
+      propertyPath: shootingtimerCD
+      value: 0.15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b69f2784f2bdbd04fac779d93c624610, type: 3}
 --- !u!1 &1820512580

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,15 +15,12 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float engineForce;
     [SerializeField] private LaserBeam laserBeam;
-    [SerializeField] private const KeyCode thrustKeyCode = KeyCode.W;
-    [SerializeField] private const KeyCode rotateLeftKeyCode = KeyCode.A;
-    [SerializeField] private const KeyCode rotateRightKeyCode = KeyCode.D;
-    [SerializeField] private const KeyCode undoKey = KeyCode.U;
+    [SerializeField] private KeyCode undoKey = KeyCode.U;
     [SerializeField] private ScreenWrapperController screenWrapper;
     [SerializeField] private int normalSortingOrder = 0;
     [SerializeField] private int invulnerableSortingOrder = 3;
     [SerializeField] private float invulnerableDuration = 2.0f;
-    [SerializeField] private float shootingtimerCD = 0.1f;
+    [SerializeField] private float shootingtimerCD = 0.2f;
     [SerializeField] private Sprite destroyedShipSprite;
     [SerializeField] private ParticleSystem thrustParticleEffect;
     [SerializeField] private AudioClip thurstSoundEffect;
@@ -41,6 +39,11 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     private Command buttonThrust;
     private Command buttonRotateLeft;
     private Command buttonRotateRight;
+
+    public KeyCode thrustKeyCode;
+    public KeyCode rotateLeftKeyCode;
+    public KeyCode rotateRightKeyCode;
+    public KeyCode fireKey;
 
     private bool canShoot = true;
     private bool isDead = false;
@@ -69,6 +72,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     private void Start()
     {
         defaultShip = spriteRenderer.sprite;
+        UpdateKeysFromPlayerPrefs();
     }
 
     public void Update()
@@ -119,7 +123,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
                 commandProcessor.ExecuteCommand(new MoveRightCommand(this, rotationSpeed));
             }
 
-            if (Input.GetMouseButtonDown(0) && canShoot)
+            if (Input.GetKey(fireKey) && canShoot)
             {
                 StartCoroutine(shootingCD());
             }
@@ -258,5 +262,13 @@ public class PlayerMovementController : MonoBehaviour, IEntity
         spriteRenderer.sprite = defaultShip;
         polygonCollider2D.enabled = true;
         isDead = false;
+    }
+
+    public void UpdateKeysFromPlayerPrefs()
+    {
+        thrustKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Thrust", "W"));
+        rotateLeftKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("TurnLeft", "A"));
+        rotateRightKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("TurnRight", "D"));
+        fireKey = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Fire", "Mouse0"));
     }
 }
