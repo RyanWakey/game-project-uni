@@ -14,9 +14,25 @@ public class MenuActions : MonoBehaviour
     [SerializeField] private TextMeshProUGUI rotateLeftKeyText;
     [SerializeField] private TextMeshProUGUI rotateRightKeyText;
     [SerializeField] private TextMeshProUGUI fireKeyText;
+
+    [SerializeField] private Button playButton;
+    [SerializeField] private Button optionsButton;
+    [SerializeField] private Button loadProfileButton;
+    public Animator panelAnimatorMenu;
+    public Animator panelAnimatorOptions;
+    public Animator panelAnimatorProfile;
+
+    [SerializeField] private GameObject mainMenuPanel;
+    [SerializeField] private GameObject optionsPanel;
+    [SerializeField] private GameObject LoadProfilePanel;
+
+
+
+
     private bool isListeningForKey;
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     private Resolution[] resolutions;
+
 
     public AudioMixer mainMixer;
     [SerializeField] private Slider volumeSlider;
@@ -32,6 +48,10 @@ public class MenuActions : MonoBehaviour
         LoadValues();
         UpdateKeyBindings();
         UpdateButtonTexts();
+
+        panelAnimatorMenu = mainMenuPanel.GetComponent<Animator>();
+        panelAnimatorOptions = optionsPanel.GetComponent<Animator>();
+        panelAnimatorProfile = LoadProfilePanel.GetComponent<Animator>();
     }
     public void StartGame()
     {
@@ -230,6 +250,39 @@ public class MenuActions : MonoBehaviour
     //    string data = "";
     //    profilemanager.saveprofile(profileindex, data);
     //}
+
+    public void ShowMainMenuPanel()
+    {
+        panelAnimatorMenu.SetTrigger("Show");
+      
+    }
+
+    public void HideMainMenu()
+    {
+        panelAnimatorMenu.SetTrigger("Hide");
+    }
+
+    public void ShowOptionsPanel()
+    {
+        panelAnimatorMenu.SetTrigger("Show");
+
+    }
+
+    public void HideOptionsPanel()
+    {
+        panelAnimatorMenu.SetTrigger("Hide");
+    }
+
+    public void ShowProfilePanel()
+    {
+        panelAnimatorMenu.SetTrigger("Show");
+
+    }
+
+    public void HideProfilePanel()
+    {
+        panelAnimatorMenu.SetTrigger("Hide");
+    }
 
 }
 
