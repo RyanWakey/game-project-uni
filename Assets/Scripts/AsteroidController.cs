@@ -10,6 +10,7 @@ public class AsteroidController : MonoBehaviour
     [SerializeField] private float asteroidLifeTime = 80.0f;
     [SerializeField] ScreenWrapperController screenWrapper;
 
+
     private SpriteRenderer sprititeRenderer;
     private Rigidbody2D rb2d;
     private Transform tr;
@@ -69,7 +70,20 @@ public class AsteroidController : MonoBehaviour
             }
         }
         GameManager.instance.asteroidSound();
-        Destroy(this.gameObject);
+        DestroyAsteroid(this.gameObject);
        
-    }  
+    }
+
+    void DestroyAsteroid(GameObject asteroid)
+    {
+        PointsManaging scoringObject = asteroid.GetComponent<PointsManaging>();
+        if (scoringObject != null)
+        {
+            int points = scoringObject.PointValue;
+            GameManager.instance.AddScore(points);
+        }
+
+        Destroy(this.gameObject);
+    }
+
 }

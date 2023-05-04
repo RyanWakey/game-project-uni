@@ -230,27 +230,12 @@ public class MenuActions : MonoBehaviour
         }
     }
 
-    //public void saveprofilea()
-    //{
-    //    saveprofile(0);
-    //}
+    public void SaveProfile(int profileIndex)
+    {
+        ProfileManager.instance.SavePlayerProgress(profileIndex);
+    }
 
-    //public void saveprofileb()
-    //{
-    //    saveprofile(1);
-    //}
-
-    //public void saveprofilec()
-    //{
-    //    saveprofile(2);
-    //}
-
-    //private void saveprofile(int profileindex)
-    //{
-    //    string data = "";
-    //    profilemanager.saveprofile(profileindex, data);
-    //}
-
+ 
     public void ShowMainMenuPanel()
     {
         panelAnimatorMenu.SetTrigger("Show");
@@ -283,6 +268,7 @@ public class MenuActions : MonoBehaviour
     {
         panelAnimatorMenu.SetTrigger("Hide");
     }
+
 
 }
 

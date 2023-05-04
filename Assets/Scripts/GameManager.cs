@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     private float respawnTime = 3.0f;
     public static GameManager instance {  get; private set; }
-
+    public int Score { get; private set; }
     public void Awake()
     {
         Scene currentScene = SceneManager.GetActiveScene();
@@ -44,7 +44,6 @@ public class GameManager : MonoBehaviour
         }
 
     }
-
 
     public void AsteroidDestroyted(AsteroidController asteroid)
     {
@@ -117,5 +116,8 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
-    
+    public void AddScore(int points)
+    {
+        Score += points;
+    }
 }

@@ -19,9 +19,11 @@ public class ProfileManager : MonoBehaviour
         }
     }
 
-    public void SaveProfile(int profileIndex, string data)
+    public void SavePlayerProgress(int profileIndex)
     {
-        PlayerPrefs.SetString("Profile" + profileIndex, data);
+       // PlayerPrefs.SetInt("Profile" + profileIndex + "_Score", GameManager.instance.Score);
+       // PlayerPrefs.SetFloat("Profile" + profileIndex + "_TimePlayed", GameManager.instance.TimePlayed);
+        PlayerPrefs.Save();
     }
 
     public string LoadProfile(int profileIndex)
