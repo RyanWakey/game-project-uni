@@ -60,7 +60,7 @@ public class AsteroidController : MonoBehaviour
 
     }
 
-    public void spawningAsteroids()
+    public void SpawningAsteroids()
     {
         if (size > minAsteroidSize)
         {
@@ -69,7 +69,7 @@ public class AsteroidController : MonoBehaviour
                 CreateAsteroidsOnDestruction();
             }
         }
-        GameManager.instance.asteroidSound();
+        GameManager.instance.AsteroidSound();
         DestroyAsteroid(this.gameObject);
        
     }
@@ -82,7 +82,6 @@ public class AsteroidController : MonoBehaviour
             int points = scoringObject.PointValue;
             GameManager.instance.AddScore(points);
         }
-
         Destroy(this.gameObject);
     }
 

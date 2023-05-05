@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int lives = 3;
     [SerializeField] private ParticleSystem asteroidExplosion;
     [SerializeField] private TextMeshProUGUI livesText;
+    [SerializeField] private TextMeshProUGUI scoreText;
 
     private string sceneName;
     private PlayerMovementController player;
@@ -24,8 +25,9 @@ public class GameManager : MonoBehaviour
     private AudioSource asteroidSource;
 
     private float respawnTime = 3.0f;
-    public static GameManager instance {  get; private set; }
-    public int Score { get; private set; }
+    public static GameManager instance { get; private set; }
+    public int score { get; private set; }
+    public float timePlayed { get; private set; }
     public void Awake()
     {
         Scene currentScene = SceneManager.GetActiveScene();
@@ -34,16 +36,26 @@ public class GameManager : MonoBehaviour
         asteroidSource = gameObject.AddComponent<AudioSource>();
         player = FindAnyObjectByType<PlayerMovementController>();
         if (instance != null)
-        { 
+        {
             Destroy(gameObject);
             return;
-        } else
+        }
+        else
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
 
     }
+
+    private void Update()
+    {
+        if (sceneName == "Game")
+        {
+            UpdateTimePlayed();
+        }
+    }
+
 
     public void AsteroidDestroyted(AsteroidController asteroid)
     {
@@ -55,20 +67,21 @@ public class GameManager : MonoBehaviour
     {
         this.asteroidExplosion.transform.position = ufo.transform.position;
         this.asteroidExplosion.Play();
-        asteroidSound();
+        AsteroidSound();
     }
 
-    public void playerDestroyed()
+    public void PlayerDestroyed()
     {
         this.lives--;
         UpdateLivesText();
-        if(this.lives == 0)
+        if (this.lives == 0)
         {
             //End
-        } else
+        }
+        else
         {
             Invoke("RespawnPlayer", this.respawnTime);
-        }    
+        }
     }
 
     private void RespawnPlayer()
@@ -83,21 +96,24 @@ public class GameManager : MonoBehaviour
         livesText.text = "Lives: " + lives;
     }
 
-    public void laserSound()
+    private void UpdateScoreText()
+    {
+        scoreText.text = "Score: " + score;
+    }
+
+    public void LaserSound()
     {
         laserSource.PlayOneShot(laserSoundEffect);
     }
 
-    public void asteroidSound()
+    public void AsteroidSound()
     {
         asteroidSource.PlayOneShot(asteroidDestroyedSoundEffect);
     }
 
-   
-    
     public void LoadScene(string sceneName)
     {
-        if(player != null)
+        if (player != null)
         {
             Destroy(player.gameObject);
         }
@@ -111,13 +127,51 @@ public class GameManager : MonoBehaviour
         {
             player = FindAnyObjectByType<PlayerMovementController>();
             livesText = GameObject.Find("LivesText").GetComponent<TextMeshProUGUI>();
+            scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
             UpdateLivesText();
+            UpdateScoreText();
         }
         SceneManager.sceneLoaded -= OnSceneLoaded;
-        }
+    }
 
     public void AddScore(int points)
     {
-        Score += points;
+        score += points;
+        UpdateScoreText();
+        if (score > GetHighScore())
+        {
+            SaveHighScore(score);
+        }
+    }
+
+    public void SaveGame()
+    {
+        PlayerPrefs.SetInt("PlayerScore", score);
+        PlayerPrefs.SetInt("HighScore", score);
+    }
+
+    public void LoadGame()
+    {
+        score = PlayerPrefs.GetInt("PlayerScore", 0);
+    }
+
+    public void SaveHighScore(int score)
+    {
+        PlayerPrefs.GetInt("HighScore", score);
+    }
+
+    public int GetHighScore()
+    {
+        return PlayerPrefs.GetInt("HighScore", 0);
+    }
+
+
+    private void UpdateTimePlayed()
+    {
+        if (SceneManager.GetActiveScene().name == "Game")
+        {
+            timePlayed += Time.deltaTime;
+        }
+
     }
 }

@@ -125,7 +125,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
 
             if (Input.GetKey(fireKey) && canShoot)
             {
-                StartCoroutine(shootingCD());
+                StartCoroutine(ShootingCD());
             }
 
             if (Input.GetKey(undoKey))
@@ -152,7 +152,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
 
             foreach (var item in asteroidsToDestroy)
             {
-                item.spawningAsteroids();
+                item.SpawningAsteroids();
                 GameManager.instance.AsteroidDestroyted(item);
                 playerHasCollided();
             }
@@ -170,7 +170,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
             foreach (var item in UFOsToDestroy)
             {
                 Destroy(item.gameObject);
-                GameManager.instance.asteroidSound();
+                GameManager.instance.AsteroidSound();
                 playerHasCollided();
             }
         }
@@ -180,7 +180,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     private void Fire() {
         LaserBeam _laser = Instantiate(laserBeam, tr.position, tr.rotation);
         _laser.laserType = LaserBeam.LaserType.PlayerLaser;
-        GameManager.instance.laserSound();
+        GameManager.instance.LaserSound();
         _laser.Laser(tr.up, Color.blue);
     }
 
@@ -214,7 +214,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
         if (ufos.Contains(colliding)) ufos.Remove(colliding);
     }
 
-    private IEnumerator shootingCD()
+    private IEnumerator ShootingCD()
     {
         Fire();
         canShoot = false;
@@ -248,7 +248,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     {
         rb2D.velocity = Vector2.zero;
         rb2D.angularVelocity = 0.0f;
-        GameManager.instance.playerDestroyed();
+        GameManager.instance.PlayerDestroyed();
         isDead = true;
         spriteRenderer.sprite = destroyedShipSprite;
         polygonCollider2D.enabled = false;

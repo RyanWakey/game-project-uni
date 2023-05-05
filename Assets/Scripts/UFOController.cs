@@ -36,7 +36,7 @@ public class UFOController : MonoBehaviour
     {
         if (canShoot)
         {
-            StartCoroutine(shootingCD());
+            StartCoroutine(ShootingCD());
         }
     }
 
@@ -53,10 +53,10 @@ public class UFOController : MonoBehaviour
         _laser.Laser(randomDirection, Color.red);
     }
 
-    private IEnumerator shootingCD()
+    private IEnumerator ShootingCD()
     {
         Fire();
-        GameManager.instance.laserSound();
+        GameManager.instance.LaserSound();
         canShoot = false;
         yield return new WaitForSeconds(shootingtimerCD);
         canShoot = true;

@@ -10,5 +10,10 @@ public class PointsManaging : MonoBehaviour
     {
         get { return pointValue; }
     }
+
+    public void GivePoints()
+    {
+        GameManager.instance.AddScore(pointValue);
+    }
 }
 

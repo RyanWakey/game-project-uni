@@ -54,7 +54,7 @@ public class LaserBeam : MonoBehaviour
             
             foreach (var item in asteroidsToDestroy)
             {
-                item.spawningAsteroids();
+                item.SpawningAsteroids();
                 Destroy(this.gameObject);
                 GameManager.instance.AsteroidDestroyted(item);
             } 
@@ -86,9 +86,9 @@ public class LaserBeam : MonoBehaviour
             foreach (var item in ufosToDestroy)
             {
                GameManager.instance.UFODestroyed(item);
+               DestroyedUFO(item.gameObject);
                Destroy(item.gameObject); 
-               Destroy(this.gameObject);
-               
+               Destroy(this.gameObject); 
                 
             }
         }
@@ -144,4 +144,12 @@ public class LaserBeam : MonoBehaviour
     {
         if (ufos.Contains(colliding)) ufos.Remove(colliding);
     }
+
+    public void DestroyedUFO(GameObject ufo)
+    {
+        PointsManaging scoringObject = ufo.GetComponent<PointsManaging>();
+        int points = scoringObject.PointValue;
+        GameManager.instance.AddScore(points);
+    }
+
 }
