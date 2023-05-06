@@ -5,6 +5,7 @@ using UnityEngine;
 public class ProfileManager : MonoBehaviour
 {
     public static ProfileManager instance;
+    private int currentProfileIndex = 0;
 
     private void Awake()
     {
@@ -18,21 +19,14 @@ public class ProfileManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    public void SavePlayerProgress(int profileIndex)
+    public void SetProfileIndex(int profileIndex)
     {
-       // PlayerPrefs.SetInt("Profile" + profileIndex + "_Score", GameManager.instance.Score);
-       // PlayerPrefs.SetFloat("Profile" + profileIndex + "_TimePlayed", GameManager.instance.TimePlayed);
-        PlayerPrefs.Save();
+        currentProfileIndex = profileIndex;
     }
 
-    public string LoadProfile(int profileIndex)
+    public int GetProfileIndex()
     {
-        return PlayerPrefs.GetString("Profile" + profileIndex, "");
+        return currentProfileIndex;
     }
 
-    public bool ProfileExists(int profileIndex)
-    {
-        return PlayerPrefs.HasKey("Profile" + profileIndex);
-    }
 }

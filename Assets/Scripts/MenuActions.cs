@@ -18,6 +18,7 @@ public class MenuActions : MonoBehaviour
     [SerializeField] private Button playButton;
     [SerializeField] private Button optionsButton;
     [SerializeField] private Button loadProfileButton;
+
     public Animator panelAnimatorMenu;
     public Animator panelAnimatorOptions;
     public Animator panelAnimatorProfile;
@@ -26,13 +27,9 @@ public class MenuActions : MonoBehaviour
     [SerializeField] private GameObject optionsPanel;
     [SerializeField] private GameObject LoadProfilePanel;
 
-
-
-
     private bool isListeningForKey;
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     private Resolution[] resolutions;
-
 
     public AudioMixer mainMixer;
     [SerializeField] private Slider volumeSlider;
@@ -40,19 +37,24 @@ public class MenuActions : MonoBehaviour
     private PlayerMovementController player;
     private ProfileManager profileManager;
 
-    private void Start()
+
+    public void Awake()
     {
         player = FindObjectOfType<PlayerMovementController>();
         profileManager = ProfileManager.instance;
-        InitializeResolutionDropdown();
-        LoadValues();
-        UpdateKeyBindings();
-        UpdateButtonTexts();
-
         panelAnimatorMenu = mainMenuPanel.GetComponent<Animator>();
         panelAnimatorOptions = optionsPanel.GetComponent<Animator>();
         panelAnimatorProfile = LoadProfilePanel.GetComponent<Animator>();
     }
+    private void Start()
+    {
+        InitializeResolutionDropdown();
+        volumeSlider.onValueChanged.AddListener(SetVolume);
+        LoadValues();
+        UpdateKeyBindings();
+        UpdateButtonTexts();
+    }
+
     public void StartGame()
     {
         GameManager.instance.LoadScene("Game");
@@ -61,13 +63,11 @@ public class MenuActions : MonoBehaviour
     private void InitializeResolutionDropdown()
     {
         resolutions = Screen.resolutions;
-
-        // Clear the dropdown list
         resolutionDropdown.ClearOptions();
 
-        // Populate the dropdown with supported resolutions
         int currentResolutionIndex = 0;
         List<string> options = new List<string>();
+
         for (int i = 0; i < resolutions.Length; i++)
         {
             string option = resolutions[i].width + " x " + resolutions[i].height;
@@ -83,8 +83,6 @@ public class MenuActions : MonoBehaviour
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
-
-        // Add the listener for when the dropdown value changes
         resolutionDropdown.onValueChanged.AddListener(SetResolution);
     }
     public void SetResolution(int resolutionIndex)
@@ -93,12 +91,29 @@ public class MenuActions : MonoBehaviour
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
         Debug.Log("Resolution changed to: " + resolution.width + "x" + resolution.height);
     }
-    
-    public void SaveVolumeButton()
+
+    public void SaveOptions()
     {
+        int profileIndex = ProfileManager.instance.GetProfileIndex();
+        string prefix = "Profile" + profileIndex + ",";
+
         float volumeValue = volumeSlider.value;
         PlayerPrefs.SetFloat("VolumeValue", volumeValue);
-        LoadValues();
+
+        PlayerPrefs.SetString(prefix + "Thrust", player.thrustKeyCode.ToString());
+        PlayerPrefs.SetString(prefix + "RotateLeft", player.rotateLeftKeyCode.ToString());
+        PlayerPrefs.SetString(prefix + "RotateRight", player.rotateRightKeyCode.ToString());
+        PlayerPrefs.SetString(prefix + "Fire", player.fireKey.ToString());
+
+        int currentResolution = resolutionDropdown.value;
+        PlayerPrefs.SetInt(prefix + "Resolution", currentResolution);
+
+        PlayerPrefs.Save();
+    }
+
+    public void SetVolume(float volumeValue)
+    {
+        AudioListener.volume = volumeValue;
     }
     public void LoadValues()
     {
@@ -110,8 +125,8 @@ public class MenuActions : MonoBehaviour
     public void UpdateKeyBindings()
     {
         player.thrustKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Thrust", "W"));
-        player.rotateLeftKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("TurnLeft", "A"));
-        player.rotateRightKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("TurnRight", "D"));
+        player.rotateLeftKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("RotateLeft", "A"));
+        player.rotateRightKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("RotateRight", "D"));
         player.fireKey = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Fire", "Mouse0"));
     }
 
@@ -161,7 +176,7 @@ public class MenuActions : MonoBehaviour
 
     private void UpdateTurnRightKey(KeyCode newKey)
     {
-        SetKeyBinding("TurnRight", newKey);
+        SetKeyBinding("RotateRight", newKey);
         UpdateKeyBindings();
         OnKeyDetected.RemoveListener(UpdateTurnRightKey);
         UpdateButtonTexts();
@@ -175,7 +190,7 @@ public class MenuActions : MonoBehaviour
 
     private void UpdateTurnLeftKey(KeyCode newKey)
     {
-        SetKeyBinding("TurnLeft", newKey);
+        SetKeyBinding("RotateLeft", newKey);
         UpdateKeyBindings();
         OnKeyDetected.RemoveListener(UpdateTurnLeftKey);
         UpdateButtonTexts();
@@ -194,11 +209,12 @@ public class MenuActions : MonoBehaviour
         OnKeyDetected.RemoveListener(UpdateFireKey);
         UpdateButtonTexts();
     }
+
     private void UpdateButtonTexts()
     {
         thrustKeyText.text = "Thrust Key: " + PlayerPrefs.GetString("Thrust", "W");
-        rotateLeftKeyText.text = "Turn Left Key: " + PlayerPrefs.GetString("TurnLeft", "A");
-        rotateRightKeyText.text = "Turn Right Key: " + PlayerPrefs.GetString("TurnRight", "D");
+        rotateLeftKeyText.text = "Rotate Left Key: " + PlayerPrefs.GetString("RotateLeft", "A");
+        rotateRightKeyText.text = "Rotate Right Key: " + PlayerPrefs.GetString("RotateRight", "D");
         fireKeyText.text = "Fire Key: " + PlayerPrefs.GetString("Fire", "Mouse0");
     }
 
@@ -224,18 +240,10 @@ public class MenuActions : MonoBehaviour
 
     private void LoadProfile(int profileIndex)
     {
-        if (profileManager.ProfileExists(profileIndex))
-        {
-            string data = profileManager.LoadProfile(profileIndex);
-        }
+        ProfileManager.instance.SetProfileIndex(profileIndex);
     }
 
-    public void SaveProfile(int profileIndex)
-    {
-        ProfileManager.instance.SavePlayerProgress(profileIndex);
-    }
 
- 
     public void ShowMainMenuPanel()
     {
         panelAnimatorMenu.SetTrigger("Show");
@@ -268,8 +276,6 @@ public class MenuActions : MonoBehaviour
     {
         panelAnimatorMenu.SetTrigger("Hide");
     }
-
-
 }
 
 

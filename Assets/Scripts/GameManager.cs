@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ParticleSystem asteroidExplosion;
     [SerializeField] private TextMeshProUGUI livesText;
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI gameOverText;
 
     private string sceneName;
     private PlayerMovementController player;
@@ -47,7 +48,6 @@ public class GameManager : MonoBehaviour
         }
 
     }
-
     private void Update()
     {
         if (sceneName == "Game")
@@ -55,7 +55,6 @@ public class GameManager : MonoBehaviour
             UpdateTimePlayed();
         }
     }
-
 
     public void AsteroidDestroyted(AsteroidController asteroid)
     {
@@ -76,7 +75,8 @@ public class GameManager : MonoBehaviour
         UpdateLivesText();
         if (this.lives == 0)
         {
-            //End
+            ShowGameOverMessage();
+            StartCoroutine(IncrementPlayCount());
         }
         else
         {
@@ -128,6 +128,8 @@ public class GameManager : MonoBehaviour
             player = FindAnyObjectByType<PlayerMovementController>();
             livesText = GameObject.Find("LivesText").GetComponent<TextMeshProUGUI>();
             scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
+            gameOverText = GameObject.Find("GameOverText").GetComponent<TextMeshProUGUI>();
+            gameOverText.gameObject.SetActive(false);
             UpdateLivesText();
             UpdateScoreText();
         }
@@ -144,27 +146,57 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SaveGame()
-    {
-        PlayerPrefs.SetInt("PlayerScore", score);
-        PlayerPrefs.SetInt("HighScore", score);
-    }
-
-    public void LoadGame()
-    {
-        score = PlayerPrefs.GetInt("PlayerScore", 0);
-    }
-
     public void SaveHighScore(int score)
     {
-        PlayerPrefs.GetInt("HighScore", score);
+        int profileIndex = ProfileManager.instance.GetProfileIndex();
+        string prefix = "Profile" + profileIndex + ",";
+        PlayerPrefs.SetInt(prefix + "HighScore", score);
     }
 
     public int GetHighScore()
     {
-        return PlayerPrefs.GetInt("HighScore", 0);
+        int profileIndex = ProfileManager.instance.GetProfileIndex();
+        string prefix = "Profile" + profileIndex + ",";
+        return PlayerPrefs.GetInt(prefix + "HighScore", 0);
     }
 
+    public int GetPlayCount()
+    {
+        int profileIndex = ProfileManager.instance.GetProfileIndex();
+        string prefix = "Profile" + profileIndex + ",";
+        return PlayerPrefs.GetInt(prefix + "PlayCount", 0);
+    }
+
+    public void SavePlayerProgress()
+    {
+        int profileIndex = ProfileManager.instance.GetProfileIndex();
+        string prefix = "Profile" + profileIndex + ",";
+
+        PlayerPrefs.SetInt(prefix + "HighScore", GetHighScore());
+        float previousTimePlayed = PlayerPrefs.GetFloat(prefix + "TimePlayed", 0);
+        float totalTimePlayed = previousTimePlayed + timePlayed;
+        PlayerPrefs.SetFloat(prefix + "TimePlayed", totalTimePlayed);
+        PlayerPrefs.SetInt(prefix + "GamesPlayed",GetPlayCount());
+        PlayerPrefs.Save();
+
+        Debug.Log("high score is :" + GetHighScore());
+        Debug.Log("Current profile is: " + ProfileManager.instance.GetProfileIndex());
+    }
+
+    public IEnumerator IncrementPlayCount()
+    {
+        // laser can still hit an object after death
+        yield return new WaitForSeconds(2f);
+
+        int profileIndex = ProfileManager.instance.GetProfileIndex();
+        string prefix = "Profile" + profileIndex + ",";
+        int playCount = PlayerPrefs.GetInt(prefix + "PlayCount", 0);
+        playCount++;
+        PlayerPrefs.SetInt(prefix + "PlayCount", playCount);
+        PlayerPrefs.Save();
+
+        SavePlayerProgress();
+    }
 
     private void UpdateTimePlayed()
     {
@@ -172,6 +204,28 @@ public class GameManager : MonoBehaviour
         {
             timePlayed += Time.deltaTime;
         }
+    }
 
+
+    public void ShowGameOverMessage()
+    {
+        gameOverText.gameObject.SetActive(true);
+        StartCoroutine(FlashGameOverText());
+    }
+
+    private IEnumerator FlashGameOverText()
+    {
+        float flashDuration = 1f;
+        float elapsedTime = 0f;
+
+        while (true)
+        {
+            elapsedTime += Time.deltaTime;
+            float alpha = Mathf.PingPong(elapsedTime, flashDuration) / flashDuration;
+            gameOverText.color = new Color(gameOverText.color.r, gameOverText.color.g, gameOverText.color.b, alpha);
+            yield return null;
+        }
     }
 }
+
+
