@@ -169,7 +169,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
 
             foreach (var item in UFOsToDestroy)
             {
-                Destroy(item.gameObject);
+                item.DestroyUfo(item.gameObject);
                 GameManager.instance.AsteroidSound();
                 playerHasCollided();
             }
@@ -271,4 +271,6 @@ public class PlayerMovementController : MonoBehaviour, IEntity
         rotateRightKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("TurnRight", "D"));
         fireKey = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Fire", "Mouse0"));
     }
+
+
 }

@@ -37,11 +37,14 @@ public class MenuActions : MonoBehaviour
     private PlayerMovementController player;
     private ProfileManager profileManager;
 
+    public ProfileUI profileUI;
 
     public void Awake()
     {
         player = FindObjectOfType<PlayerMovementController>();
         profileManager = ProfileManager.instance;
+        profileUI = FindObjectOfType<ProfileUI>();
+
         panelAnimatorMenu = mainMenuPanel.GetComponent<Animator>();
         panelAnimatorOptions = optionsPanel.GetComponent<Animator>();
         panelAnimatorProfile = LoadProfilePanel.GetComponent<Animator>();
@@ -241,6 +244,7 @@ public class MenuActions : MonoBehaviour
     private void LoadProfile(int profileIndex)
     {
         ProfileManager.instance.SetProfileIndex(profileIndex);
+        profileUI.UpdateProfileColors();
     }
 
 

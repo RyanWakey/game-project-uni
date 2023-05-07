@@ -68,4 +68,15 @@ public class UFOController : MonoBehaviour
         rb2d.AddForce(direction * speed * speedFactor);
         Destroy(this.gameObject, UFOLifeTime);
     }
+
+    public void DestroyUfo(GameObject asteroid)
+    {
+        PointsManaging scoringObject = asteroid.GetComponent<PointsManaging>();
+        if (scoringObject != null)
+        {
+            int points = scoringObject.PointValue;
+            GameManager.instance.AddScore(points);
+            Destroy(this.gameObject);
+        }
+    }
 }

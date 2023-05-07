@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI livesText;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI gameOverText;
+    [SerializeField] private Button returnBtn;
 
     private string sceneName;
     private PlayerMovementController player;
@@ -33,9 +34,11 @@ public class GameManager : MonoBehaviour
     {
         Scene currentScene = SceneManager.GetActiveScene();
         sceneName = currentScene.name;
+
         laserSource = gameObject.AddComponent<AudioSource>();
         asteroidSource = gameObject.AddComponent<AudioSource>();
         player = FindAnyObjectByType<PlayerMovementController>();
+
         if (instance != null)
         {
             Destroy(gameObject);
@@ -44,8 +47,8 @@ public class GameManager : MonoBehaviour
         else
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
         }
+
 
     }
     private void Update()
@@ -113,10 +116,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadScene(string sceneName)
     {
-        if (player != null)
-        {
-            Destroy(player.gameObject);
-        }
+        Destroy(player.gameObject);
         SceneManager.LoadScene(sceneName);
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -130,10 +130,27 @@ public class GameManager : MonoBehaviour
             scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
             gameOverText = GameObject.Find("GameOverText").GetComponent<TextMeshProUGUI>();
             gameOverText.gameObject.SetActive(false);
+            
+            GameObject returnBtnObject = GameObject.Find("ReturnMainMenu");
+            if (returnBtnObject != null)
+            {
+                returnBtn = returnBtnObject.GetComponent<Button>();
+                returnBtn.gameObject.SetActive(false);
+                returnBtn.onClick.AddListener(ReturnToMainMenu);
+            }
+
+            sceneName = "Game";
+
             UpdateLivesText();
             UpdateScoreText();
         }
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        else if (scene.name == "StartMenu")
+        {
+            player = FindAnyObjectByType<PlayerMovementController>();
+            Debug.Log("this");
+            sceneName = "StartMenu";
+        }
+        SceneManager.sceneLoaded -= OnSceneLoaded; 
     }
 
     public void AddScore(int points)
@@ -164,7 +181,7 @@ public class GameManager : MonoBehaviour
     {
         int profileIndex = ProfileManager.instance.GetProfileIndex();
         string prefix = "Profile" + profileIndex + ",";
-        return PlayerPrefs.GetInt(prefix + "PlayCount", 0);
+        return PlayerPrefs.GetInt(prefix + "GamesPlayed", 0);
     }
 
     public void SavePlayerProgress()
@@ -172,11 +189,15 @@ public class GameManager : MonoBehaviour
         int profileIndex = ProfileManager.instance.GetProfileIndex();
         string prefix = "Profile" + profileIndex + ",";
 
-        PlayerPrefs.SetInt(prefix + "HighScore", GetHighScore());
         float previousTimePlayed = PlayerPrefs.GetFloat(prefix + "TimePlayed", 0);
         float totalTimePlayed = previousTimePlayed + timePlayed;
+
+        int gamesPlayed = GetPlayCount();
+        gamesPlayed++;
+
+        PlayerPrefs.SetInt(prefix + "HighScore", GetHighScore());
         PlayerPrefs.SetFloat(prefix + "TimePlayed", totalTimePlayed);
-        PlayerPrefs.SetInt(prefix + "GamesPlayed",GetPlayCount());
+        PlayerPrefs.SetInt(prefix + "GamesPlayed", gamesPlayed);
         PlayerPrefs.Save();
 
         Debug.Log("high score is :" + GetHighScore());
@@ -187,23 +208,13 @@ public class GameManager : MonoBehaviour
     {
         // laser can still hit an object after death
         yield return new WaitForSeconds(2f);
-
-        int profileIndex = ProfileManager.instance.GetProfileIndex();
-        string prefix = "Profile" + profileIndex + ",";
-        int playCount = PlayerPrefs.GetInt(prefix + "PlayCount", 0);
-        playCount++;
-        PlayerPrefs.SetInt(prefix + "PlayCount", playCount);
-        PlayerPrefs.Save();
-
         SavePlayerProgress();
+        returnBtn.gameObject.SetActive(true);
     }
 
     private void UpdateTimePlayed()
     {
-        if (SceneManager.GetActiveScene().name == "Game")
-        {
-            timePlayed += Time.deltaTime;
-        }
+    timePlayed += Time.deltaTime;
     }
 
 
@@ -225,6 +236,12 @@ public class GameManager : MonoBehaviour
             gameOverText.color = new Color(gameOverText.color.r, gameOverText.color.g, gameOverText.color.b, alpha);
             yield return null;
         }
+    }
+
+    public void ReturnToMainMenu()
+    {
+        SceneManager.LoadScene("StartMenu");
+        sceneName = "StartMenu";
     }
 }
 

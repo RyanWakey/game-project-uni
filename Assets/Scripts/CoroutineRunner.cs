@@ -10,8 +10,7 @@ public class CoroutineRunner : MonoBehaviour
     {
         if (Instance == null)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            Instance = this; 
         }
         else
         {

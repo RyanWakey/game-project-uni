@@ -86,8 +86,7 @@ public class LaserBeam : MonoBehaviour
             foreach (var item in ufosToDestroy)
             {
                GameManager.instance.UFODestroyed(item);
-               DestroyedUFO(item.gameObject);
-               Destroy(item.gameObject); 
+               item.DestroyUfo(item.gameObject);
                Destroy(this.gameObject); 
                 
             }
