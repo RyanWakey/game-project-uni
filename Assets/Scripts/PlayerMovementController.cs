@@ -56,6 +56,10 @@ public class PlayerMovementController : MonoBehaviour, IEntity
 
     Rigidbody2D IEntity.rb2D => rb2D;
     Transform IEntity.tr => tr;
+
+    private float aliveTime;
+    private int asteroidKillCount;
+    private float killCountResetTime;
     
     
     private void Awake()
@@ -79,6 +83,13 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     {
         if (isDead == false)
         {
+            aliveTime += Time.deltaTime;
+            if(aliveTime >= 60f)
+            {
+                AchievementManager.instance.NotifyAchievementComplete(Achievement.AchievementType.StayAliveFor60SecondsWithoutDieing);
+                aliveTime = 0;
+            }
+
             if (invulnerabilityTimer > 0)
             {
                 invulnerabilityTimer -= Time.deltaTime;
@@ -133,10 +144,9 @@ public class PlayerMovementController : MonoBehaviour, IEntity
                 commandProcessor.UndoCommand();
             }
         }
+        aliveTime = 0;
     }
         
-        
-    
     public void FixedUpdate()
     {
         screenWrapper.WrapAround(this.tr, this.rb2D);
@@ -155,6 +165,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
                 item.SpawningAsteroids();
                 GameManager.instance.AsteroidDestroyted(item);
                 playerHasCollided();
+                AsteroidDestroyed();
             }
         }
 
@@ -182,6 +193,29 @@ public class PlayerMovementController : MonoBehaviour, IEntity
         _laser.laserType = LaserBeam.LaserType.PlayerLaser;
         GameManager.instance.LaserSound();
         _laser.Laser(tr.up, Color.blue);
+    }
+
+    public void AsteroidDestroyed()
+    {
+        asteroidKillCount++;
+
+        if (asteroidKillCount == 1)
+        {
+            StartCoroutine(ResetKillCountAfterDelay(5f));
+        }
+
+        if (asteroidKillCount >= 10)
+        {
+            AchievementManager.instance.NotifyAchievementComplete(Achievement.AchievementType.Kill10AsteroidsIn5Seconds);
+            asteroidKillCount = 0;
+            StopCoroutine(ResetKillCountAfterDelay(5f));
+        }
+    }
+
+    private IEnumerator ResetKillCountAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        asteroidKillCount = 0;
     }
 
     public void InAsteroidChange(bool _inAsteroid)

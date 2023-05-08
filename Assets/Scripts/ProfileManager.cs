@@ -22,6 +22,7 @@ public class ProfileManager : MonoBehaviour
     public void SetProfileIndex(int profileIndex)
     {
         currentProfileIndex = profileIndex;
+        AchievementManager.instance.LoadAchievements();
     }
 
     public int GetProfileIndex()

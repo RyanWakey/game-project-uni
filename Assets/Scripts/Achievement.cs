@@ -2,26 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Achievement : MonoBehaviour
+public class Achievement
 {
-   public enum AchievementType 
-    { 
-        StayAliveFor30Seconds,
+    public enum AchievementType
+    {
+        StayAliveFor60SecondsWithoutDieing,
         ReachScore1000,
         ReachScore5000,
+        ReachScore10000,
+        Reach10000scoreWithoutDieing,
         Kill10AsteroidsIn5Seconds
-    } 
+    }
 
-    public AchievementType Type;
-    public string Name;
-    public string Description;
-    public float isUnlocked;
+    public AchievementType type;
+    public string name;
+    public string description;
+    public bool isUnlocked;
+    public int profileIndex;
 
-    public Achievement(AchievementType type, string name, string description, float isUnlocked)
+    public Achievement(AchievementType _type, string _name, string _description, bool _isUnlocked)
     {
-        Type = type;
-        Name = name;
-        Description = description;
-        this.isUnlocked = isUnlocked;
+        type = _type;
+        name = _name;
+        description = _description;
+        isUnlocked = _isUnlocked;
     }
 }

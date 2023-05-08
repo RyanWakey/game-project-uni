@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class ProfileUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI[] highScoreTexts;
     [SerializeField] private TextMeshProUGUI[] timePlayedTexts;
     [SerializeField] private TextMeshProUGUI[] gamesPlayedTexts;
+    [SerializeField] private TextMeshProUGUI[] achievementsUnlockedText;
     [SerializeField] private Color selectedProfile = Color.green;
     [SerializeField] private Color unselectedProfile = Color.white;
 
@@ -40,6 +42,8 @@ public class ProfileUI : MonoBehaviour
         timePlayedTexts[profileIndex].text = "Time Played: " + timePlayedInMinutes + " mins";
         gamesPlayedTexts[profileIndex].text = "Games Played: " + gamesPlayed;
 
+
+        UpdateAchievementsTexts();
         UpdateProfileColors();
     }
 
@@ -52,11 +56,14 @@ public class ProfileUI : MonoBehaviour
         PlayerPrefs.SetInt(prefix + "HighScore", 0);
         PlayerPrefs.SetFloat(prefix + "TimePlayed", 0);
         PlayerPrefs.SetInt(prefix + "GamesPlayed", 0);
-
+        AchievementManager.instance.ResetAchievementsForProfile(currentProfileIndex);
         PlayerPrefs.Save();
-        UpdateProfileTextFields(currentProfileIndex);
-    }
 
+        UpdateProfileTextFields(currentProfileIndex);
+
+        
+    }
+  
     public void UpdateProfileTextFields(int profileIndex)
     {
         string prefix = "Profile" + profileIndex + ",";
@@ -68,6 +75,7 @@ public class ProfileUI : MonoBehaviour
         highScoreTexts[profileIndex].text = "High Score: " + highScore;
         timePlayedTexts[profileIndex].text = "Time Played: " + timePlayed;
         gamesPlayedTexts[profileIndex].text = "Games Played: " + gamesPlayed;
+        UpdateAchievementsTexts();
     }
 
     public void UpdateProfileColors()
@@ -80,14 +88,31 @@ public class ProfileUI : MonoBehaviour
                 highScoreTexts[i].color = selectedProfile;
                 timePlayedTexts[i].color = selectedProfile;
                 gamesPlayedTexts[i].color = selectedProfile;
+                achievementsUnlockedText[i].color = selectedProfile;
             }
             else
             {
                 highScoreTexts[i].color = unselectedProfile;
                 timePlayedTexts[i].color = unselectedProfile;
                 gamesPlayedTexts[i].color = unselectedProfile;
+                achievementsUnlockedText[i].color = unselectedProfile;
             }
         }
     }
+
+    public void UpdateAchievementsTexts()
+    {
+        int totalAchievements = Enum.GetValues(typeof(Achievement.AchievementType)).Length;
+
+        for (int i = 0; i < 3; i++)
+        {
+            ProfileManager.instance.SetProfileIndex(i);
+            int unlockedCount = AchievementManager.instance.GetUnlockedAchievementCount();
+            achievementsUnlockedText[i].text = "Achievements Unlocked " + unlockedCount + "/" + totalAchievements;
+        }
+
+        ProfileManager.instance.SetProfileIndex(PlayerPrefs.GetInt("CurrentProfileIndex", 0));
+    }
+
 
 }

@@ -156,10 +156,31 @@ public class GameManager : MonoBehaviour
     public void AddScore(int points)
     {
         score += points;
+        CheckForAchievements();
         UpdateScoreText();
         if (score > GetHighScore())
         {
             SaveHighScore(score);
+        }
+    }
+
+    private void CheckForAchievements()
+    {
+        if(score >= 1000) 
+        {
+            AchievementManager.instance.NotifyAchievementComplete(Achievement.AchievementType.ReachScore1000);
+        }
+        if(score >= 5000)
+        {
+            AchievementManager.instance.NotifyAchievementComplete(Achievement.AchievementType.ReachScore5000);
+        }
+        if(score >= 10000)
+        {
+            AchievementManager.instance.NotifyAchievementComplete(Achievement.AchievementType.ReachScore10000);
+        }
+        if(score >= 10000 && lives == 3)
+        {
+            AchievementManager.instance.NotifyAchievementComplete(Achievement.AchievementType.Reach10000scoreWithoutDieing);
         }
     }
 

@@ -245,6 +245,7 @@ public class MenuActions : MonoBehaviour
     {
         ProfileManager.instance.SetProfileIndex(profileIndex);
         profileUI.UpdateProfileColors();
+        profileUI.UpdateAchievementsTexts();
     }
 
 

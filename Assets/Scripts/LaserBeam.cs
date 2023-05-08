@@ -21,6 +21,8 @@ public class LaserBeam : MonoBehaviour
     private bool inUFO = false;
     private List<UFOController> ufos = new List<UFOController>();
 
+    public PlayerMovementController playerAchievement;
+
     public enum LaserType
     {
         PlayerLaser = 0,
@@ -33,6 +35,7 @@ public class LaserBeam : MonoBehaviour
         screenWrapper = FindObjectOfType<ScreenWrapperController>();
         spriteRenderer = GetComponent<SpriteRenderer>(); 
         tr = transform;
+        playerAchievement = FindAnyObjectByType<PlayerMovementController>();
     }
 
     public void Laser(Vector3 direction, Color laserColour)
@@ -87,8 +90,8 @@ public class LaserBeam : MonoBehaviour
             {
                GameManager.instance.UFODestroyed(item);
                item.DestroyUfo(item.gameObject);
-               Destroy(this.gameObject); 
-                
+               Destroy(this.gameObject);
+               playerAchievement.AsteroidDestroyed(); 
             }
         }
 
