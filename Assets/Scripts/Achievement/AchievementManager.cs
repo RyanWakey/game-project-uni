@@ -15,6 +15,7 @@ public class AchievementManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -25,7 +26,24 @@ public class AchievementManager : MonoBehaviour
 
     public void NotifyAchievementComplete(Achievement.AchievementType type)
     {
-        achievementQ.Enqueue(type);
+        Achievement achievement = GetAchievement(type);
+        if (achievement != null && !achievement.isUnlocked)
+        {
+            achievementQ.Enqueue(type);
+        }
+
+    }
+
+    public Achievement GetAchievement(Achievement.AchievementType type)
+    {
+        foreach (Achievement achievement in achievements)
+        {
+            if (achievement.type == type)
+            {
+                return achievement;
+            }
+        }
+        return null;
     }
 
     private void Start()
@@ -37,16 +55,8 @@ public class AchievementManager : MonoBehaviour
 
     private void UnlockAchievement(Achievement.AchievementType type)
     {
-        Achievement curAchievement = null;
+        Achievement curAchievement = GetAchievement(type);
 
-        foreach (Achievement achievement in achievements)
-        {
-            if(achievement.type == type)
-            {
-                curAchievement = achievement;
-                break;
-            }
-        }
         if (curAchievement != null && !curAchievement.isUnlocked)
         {
             curAchievement.isUnlocked = true;
@@ -55,15 +65,18 @@ public class AchievementManager : MonoBehaviour
             PlayerPrefs.SetInt(prefix + "Achievement," + curAchievement.type, 1);
             PlayerPrefs.Save();
             Debug.Log("Achievement Unlocked: " + curAchievement.name);
+            AchievementNotification.instance.ShowNotification("Achievement Unlocked: " + curAchievement.name + "\n" + curAchievement.description);
         }
     }
 
     private IEnumerator AchievementQueueCheck()
     {
-        for (;;)
+        while (true)
         {
+            Debug.Log(achievementQ.Count);
             if (achievementQ.Count > 0)
             {
+                Debug.Log("UNLOCKING ACHIEVEMENT");
                 UnlockAchievement(achievementQ.Dequeue());
             }
             yield return new WaitForSeconds(5.0f);
@@ -75,6 +88,8 @@ public class AchievementManager : MonoBehaviour
         int profileIndex = ProfileManager.instance.GetProfileIndex();
         string prefix = "Profile" + profileIndex + ",";
 
+        achievements.Clear();
+
         foreach (Achievement.AchievementType type in Enum.GetValues(typeof(Achievement.AchievementType)))
         {
             string achievementName;
@@ -82,9 +97,9 @@ public class AchievementManager : MonoBehaviour
 
             switch (type)
             {
-                case Achievement.AchievementType.StayAliveFor60SecondsWithoutDieing:
+                case Achievement.AchievementType.StayAliveFor30SecondsWithoutDieing:
                     achievementName = "Dodger";
-                    achievementDescription = "Stay alive for 60 seconds";
+                    achievementDescription = "Stay alive for 30 seconds";
                     break;
                 case Achievement.AchievementType.ReachScore1000:
                     achievementName = "Getting Better!";
@@ -114,6 +129,7 @@ public class AchievementManager : MonoBehaviour
 
             int unlockedValue = PlayerPrefs.GetInt(prefix + "Achievement," + type.ToString(), 0);
             bool isUnlocked;
+
             if (unlockedValue == 1)
             {
                 isUnlocked = true;
@@ -123,15 +139,16 @@ public class AchievementManager : MonoBehaviour
                 isUnlocked = false;
             }
 
-            achievements.Add(new Achievement(type, achievementName, achievementDescription, isUnlocked));
+            achievements.Add(new Achievement(type, achievementName, achievementDescription, isUnlocked, profileIndex));
         }
     }
-    public int GetUnlockedAchievementCount()
+
+    public int GetUnlockedAchievementCount(int profileIndex)
     {
         int count = 0;
         foreach (Achievement achievement in achievements)
         {
-            if (achievement.isUnlocked)
+            if (achievement.isUnlocked && achievement.profileIndex == profileIndex)
             {
                 count++;
             }
@@ -139,13 +156,18 @@ public class AchievementManager : MonoBehaviour
         return count;
     }
 
+
     public void ResetAchievementsForProfile(int profileIndex)
     {
         string prefix = "Profile" + profileIndex + ",";
 
-        foreach (Achievement.AchievementType type in Enum.GetValues(typeof(Achievement.AchievementType)))
+        foreach (Achievement achievement in achievements)
         {
-            PlayerPrefs.SetInt(prefix + "Achievement," + type.ToString(), 0);
+            if (achievement.profileIndex == profileIndex)
+            {
+                achievement.isUnlocked = false;
+                PlayerPrefs.SetInt(prefix + "Achievement," + achievement.type.ToString(), 0);
+            }
         }
 
         PlayerPrefs.Save();
@@ -154,5 +176,5 @@ public class AchievementManager : MonoBehaviour
         {
             LoadAchievements();
         }
-    }
+    } 
 }

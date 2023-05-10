@@ -6,7 +6,7 @@ public class Achievement
 {
     public enum AchievementType
     {
-        StayAliveFor60SecondsWithoutDieing,
+        StayAliveFor30SecondsWithoutDieing,
         ReachScore1000,
         ReachScore5000,
         ReachScore10000,
@@ -20,11 +20,12 @@ public class Achievement
     public bool isUnlocked;
     public int profileIndex;
 
-    public Achievement(AchievementType _type, string _name, string _description, bool _isUnlocked)
+    public Achievement(AchievementType _type, string _name, string _description, bool _isUnlocked, int _profileIndex)
     {
         type = _type;
         name = _name;
         description = _description;
         isUnlocked = _isUnlocked;
+        profileIndex = _profileIndex;
     }
 }

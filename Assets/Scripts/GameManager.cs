@@ -166,19 +166,21 @@ public class GameManager : MonoBehaviour
 
     private void CheckForAchievements()
     {
-        if(score >= 1000) 
+     
+        if (score >= 1000 && !AchievementManager.instance.GetAchievement(Achievement.AchievementType.ReachScore1000).isUnlocked) 
         {
+            Debug.Log("this this this" + !AchievementManager.instance.GetAchievement(Achievement.AchievementType.ReachScore1000).isUnlocked);
             AchievementManager.instance.NotifyAchievementComplete(Achievement.AchievementType.ReachScore1000);
         }
-        if(score >= 5000)
+        if(score >= 5000 && !AchievementManager.instance.GetAchievement(Achievement.AchievementType.ReachScore5000).isUnlocked)
         {
             AchievementManager.instance.NotifyAchievementComplete(Achievement.AchievementType.ReachScore5000);
         }
-        if(score >= 10000)
+        if(score >= 10000 && !AchievementManager.instance.GetAchievement(Achievement.AchievementType.ReachScore10000).isUnlocked)
         {
             AchievementManager.instance.NotifyAchievementComplete(Achievement.AchievementType.ReachScore10000);
         }
-        if(score >= 10000 && lives == 3)
+        if(score >= 10000 && lives == 3 && !AchievementManager.instance.GetAchievement(Achievement.AchievementType.Reach10000scoreWithoutDieing).isUnlocked)
         {
             AchievementManager.instance.NotifyAchievementComplete(Achievement.AchievementType.Reach10000scoreWithoutDieing);
         }

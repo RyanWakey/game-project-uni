@@ -127,10 +127,13 @@ public class MenuActions : MonoBehaviour
 
     public void UpdateKeyBindings()
     {
-        player.thrustKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Thrust", "W"));
-        player.rotateLeftKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("RotateLeft", "A"));
-        player.rotateRightKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("RotateRight", "D"));
-        player.fireKey = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Fire", "Mouse0"));
+        int profileIndex = ProfileManager.instance.GetProfileIndex();
+        string prefix = "Profile" + profileIndex + ",";
+
+        player.thrustKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString(prefix + "Thrust", "W"));
+        player.rotateLeftKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString(prefix + "RotateLeft", "A"));
+        player.rotateRightKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString(prefix + "RotateRight", "D"));
+        player.fireKey = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString(prefix + "Fire", "Mouse0"));
     }
 
     public void StartListeningForKey()
@@ -215,15 +218,21 @@ public class MenuActions : MonoBehaviour
 
     private void UpdateButtonTexts()
     {
-        thrustKeyText.text = "Thrust Key: " + PlayerPrefs.GetString("Thrust", "W");
-        rotateLeftKeyText.text = "Rotate Left Key: " + PlayerPrefs.GetString("RotateLeft", "A");
-        rotateRightKeyText.text = "Rotate Right Key: " + PlayerPrefs.GetString("RotateRight", "D");
-        fireKeyText.text = "Fire Key: " + PlayerPrefs.GetString("Fire", "Mouse0");
+        int profileIndex = ProfileManager.instance.GetProfileIndex();
+        string prefix = "Profile" + profileIndex + ",";
+
+        thrustKeyText.text = "Thrust Key: " + PlayerPrefs.GetString(prefix + "Thrust", "W");
+        rotateLeftKeyText.text = "Rotate Left Key: " + PlayerPrefs.GetString(prefix + "RotateLeft", "A");
+        rotateRightKeyText.text = "Rotate Right Key: " + PlayerPrefs.GetString(prefix + "RotateRight", "D");
+        fireKeyText.text = "Fire Key: " + PlayerPrefs.GetString(prefix + "Fire", "Mouse0");
     }
 
     private void SetKeyBinding(string action, KeyCode newKey)
     {
-        PlayerPrefs.SetString(action, newKey.ToString());
+        int profileIndex = ProfileManager.instance.GetProfileIndex();
+        string prefix = "Profile" + profileIndex + ",";
+
+        PlayerPrefs.SetString(prefix + action, newKey.ToString());
     }
 
     public void LoadProfileA()
@@ -245,7 +254,8 @@ public class MenuActions : MonoBehaviour
     {
         ProfileManager.instance.SetProfileIndex(profileIndex);
         profileUI.UpdateProfileColors();
-        profileUI.UpdateAchievementsTexts();
+        UpdateKeyBindings();
+        UpdateButtonTexts();
     }
 
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
-
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CommandProcessor))]
@@ -59,9 +59,8 @@ public class PlayerMovementController : MonoBehaviour, IEntity
 
     private float aliveTime;
     private int asteroidKillCount;
-    private float killCountResetTime;
-    
-    
+
+
     private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
@@ -83,11 +82,17 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     {
         if (isDead == false)
         {
-            aliveTime += Time.deltaTime;
-            if(aliveTime >= 60f)
+            if (SceneManager.GetActiveScene().name == "Game")
             {
-                AchievementManager.instance.NotifyAchievementComplete(Achievement.AchievementType.StayAliveFor60SecondsWithoutDieing);
-                aliveTime = 0;
+                aliveTime += Time.deltaTime;
+                Debug.Log(aliveTime);
+                
+                if (aliveTime >= 30f && !AchievementManager.instance.GetAchievement(Achievement.AchievementType.StayAliveFor30SecondsWithoutDieing).isUnlocked)
+                {
+                    AchievementManager.instance.NotifyAchievementComplete(Achievement.AchievementType.StayAliveFor30SecondsWithoutDieing);
+                    aliveTime = 0;
+                    Debug.Log("Stay Alive");
+                }
             }
 
             if (invulnerabilityTimer > 0)
@@ -143,8 +148,11 @@ public class PlayerMovementController : MonoBehaviour, IEntity
             {
                 commandProcessor.UndoCommand();
             }
+        } else
+        {
+            aliveTime = 0;
         }
-        aliveTime = 0;
+       
     }
         
     public void FixedUpdate()
@@ -198,17 +206,16 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     public void AsteroidDestroyed()
     {
         asteroidKillCount++;
-
+        Debug.Log("KILL COUNT" + asteroidKillCount);
         if (asteroidKillCount == 1)
         {
             StartCoroutine(ResetKillCountAfterDelay(5f));
         }
 
-        if (asteroidKillCount >= 10)
+        if (asteroidKillCount >= 10 && !AchievementManager.instance.GetAchievement(Achievement.AchievementType.Kill10AsteroidsIn5Seconds).isUnlocked)
         {
             AchievementManager.instance.NotifyAchievementComplete(Achievement.AchievementType.Kill10AsteroidsIn5Seconds);
-            asteroidKillCount = 0;
-            StopCoroutine(ResetKillCountAfterDelay(5f));
+            asteroidKillCount = 0; 
         }
     }
 
@@ -300,10 +307,13 @@ public class PlayerMovementController : MonoBehaviour, IEntity
 
     public void UpdateKeysFromPlayerPrefs()
     {
-        thrustKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Thrust", "W"));
-        rotateLeftKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("TurnLeft", "A"));
-        rotateRightKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("TurnRight", "D"));
-        fireKey = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Fire", "Mouse0"));
+        int profileIndex = ProfileManager.instance.GetProfileIndex();
+        string prefix = "Profile" + profileIndex + ",";
+
+        thrustKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString(prefix + "Thrust", "W"));
+        rotateLeftKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString(prefix + "RotateLeft", "A"));
+        rotateRightKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString(prefix + "RotateRight", "D"));
+        fireKey = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString(prefix + "Fire", "Mouse0"));
     }
 
 

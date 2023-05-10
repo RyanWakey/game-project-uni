@@ -17,6 +17,7 @@ public class ProfileUI : MonoBehaviour
     private void Start()
     {
         LoadProfiles();
+        UpdateAchievementsTexts();
         UpdateProfileColors();
     }
 
@@ -42,24 +43,24 @@ public class ProfileUI : MonoBehaviour
         timePlayedTexts[profileIndex].text = "Time Played: " + timePlayedInMinutes + " mins";
         gamesPlayedTexts[profileIndex].text = "Games Played: " + gamesPlayed;
 
-
-        UpdateAchievementsTexts();
+        UpdateAnAchievementsText();
         UpdateProfileColors();
     }
 
 
     public void ClearCurrentProfileData()
     {
-        int currentProfileIndex = ProfileManager.instance.GetProfileIndex();
-        string prefix = "Profile" + currentProfileIndex + ",";
+        int profileIndex = ProfileManager.instance.GetProfileIndex();
+        string prefix = "Profile" + profileIndex + ",";
 
         PlayerPrefs.SetInt(prefix + "HighScore", 0);
         PlayerPrefs.SetFloat(prefix + "TimePlayed", 0);
         PlayerPrefs.SetInt(prefix + "GamesPlayed", 0);
-        AchievementManager.instance.ResetAchievementsForProfile(currentProfileIndex);
+        AchievementManager.instance.ResetAchievementsForProfile(profileIndex);
         PlayerPrefs.Save();
 
-        UpdateProfileTextFields(currentProfileIndex);
+        UpdateProfileTextFields(profileIndex);
+        UpdateAnAchievementsText();
 
         
     }
@@ -75,7 +76,7 @@ public class ProfileUI : MonoBehaviour
         highScoreTexts[profileIndex].text = "High Score: " + highScore;
         timePlayedTexts[profileIndex].text = "Time Played: " + timePlayed;
         gamesPlayedTexts[profileIndex].text = "Games Played: " + gamesPlayed;
-        UpdateAchievementsTexts();
+        UpdateAnAchievementsText();
     }
 
     public void UpdateProfileColors()
@@ -106,12 +107,17 @@ public class ProfileUI : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            ProfileManager.instance.SetProfileIndex(i);
-            int unlockedCount = AchievementManager.instance.GetUnlockedAchievementCount();
+            int unlockedCount = AchievementManager.instance.GetUnlockedAchievementCount(i);
             achievementsUnlockedText[i].text = "Achievements Unlocked " + unlockedCount + "/" + totalAchievements;
         }
+    }
 
-        ProfileManager.instance.SetProfileIndex(PlayerPrefs.GetInt("CurrentProfileIndex", 0));
+    public void UpdateAnAchievementsText()
+    {
+        int totalAchievements = Enum.GetValues(typeof(Achievement.AchievementType)).Length;
+        int profileIndex = ProfileManager.instance.GetProfileIndex();
+        int unlockedCount = AchievementManager.instance.GetUnlockedAchievementCount(profileIndex);
+        achievementsUnlockedText[profileIndex].text = "Achievements Unlocked " + unlockedCount + "/" + totalAchievements;
     }
 
 
