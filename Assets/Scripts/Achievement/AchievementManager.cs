@@ -88,7 +88,7 @@ public class AchievementManager : MonoBehaviour
         int profileIndex = ProfileManager.instance.GetProfileIndex();
         string prefix = "Profile" + profileIndex + ",";
 
-        achievements.Clear();
+
 
         foreach (Achievement.AchievementType type in Enum.GetValues(typeof(Achievement.AchievementType)))
         {

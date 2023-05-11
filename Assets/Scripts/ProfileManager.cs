@@ -19,6 +19,11 @@ public class ProfileManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    public void Start()
+    {
+        SetProfileIndex(0);
+    }
     public void SetProfileIndex(int profileIndex)
     {
         currentProfileIndex = profileIndex;

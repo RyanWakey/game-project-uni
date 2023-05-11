@@ -158,8 +158,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -726.98126, y: 466.25543}
-  m_SizeDelta: {x: 346.0375, y: 57.4891}
+  m_AnchoredPosition: {x: -507, y: 441}
+  m_SizeDelta: {x: 346.038, y: 57.169}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &117531377
 MonoBehaviour:
@@ -559,8 +559,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -800, y: 400}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -580.01874, y: 375.11328}
+  m_SizeDelta: {x: 200, y: 49.722}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &878066445
 MonoBehaviour:
@@ -894,8 +894,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -175, y: 229}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -154, y: 208}
+  m_SizeDelta: {x: 200, y: 49.722}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1486078892
 MonoBehaviour:
@@ -1042,11 +1042,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
+  m_ReferenceResolution: {x: 1440, y: 1080}
+  m_ScreenMatchMode: 2
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -1153,6 +1153,14 @@ PrefabInstance:
     - target: {fileID: 2119500280940502171, guid: b69f2784f2bdbd04fac779d93c624610, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2119500280940502174, guid: b69f2784f2bdbd04fac779d93c624610, type: 3}
+      propertyPath: engineForce
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 2119500280940502174, guid: b69f2784f2bdbd04fac779d93c624610, type: 3}
+      propertyPath: rotationSpeed
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 2119500280940502174, guid: b69f2784f2bdbd04fac779d93c624610, type: 3}
       propertyPath: screenWrapper
@@ -1303,8 +1311,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 430, y: 651}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 201, y: 652}
+  m_SizeDelta: {x: 200, y: 57.594}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1820512580
 GameObject:
@@ -1458,7 +1466,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1486847079573929689, guid: a6c5537f4cc9f5e49933c732a2dff0da, type: 3}
       propertyPath: asteroidSpawnRate
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1486847079573929689, guid: a6c5537f4cc9f5e49933c732a2dff0da, type: 3}
       propertyPath: enemeyAngleVariance
@@ -1686,6 +1694,10 @@ PrefabInstance:
     - target: {fileID: 4801501057244146462, guid: 7af328218a331c645ad1219ff35e2cc9, type: 3}
       propertyPath: m_Name
       value: Main Camera
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801501057244146465, guid: 7af328218a331c645ad1219ff35e2cc9, type: 3}
+      propertyPath: orthographic size
+      value: 89.40115
       objectReference: {fileID: 0}
     - target: {fileID: 4801501057244146466, guid: 7af328218a331c645ad1219ff35e2cc9, type: 3}
       propertyPath: m_RootOrder

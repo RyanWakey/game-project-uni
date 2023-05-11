@@ -92,11 +92,19 @@ public class MenuActions : MonoBehaviour
     {
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+        Debug.Log(resolution);
+
+        int profileIndex = ProfileManager.instance.GetProfileIndex();
+        string prefix = "Profile" + profileIndex + ",";
+
+        int currentResolution = resolutionDropdown.value;
+        PlayerPrefs.SetInt(prefix + "Resolution", currentResolution);
+
         Debug.Log("Resolution changed to: " + resolution.width + "x" + resolution.height);
     }
 
     public void SaveOptions()
-    {
+    { // remove this
         int profileIndex = ProfileManager.instance.GetProfileIndex();
         string prefix = "Profile" + profileIndex + ",";
 
