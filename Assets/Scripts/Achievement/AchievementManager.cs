@@ -22,6 +22,8 @@ public class AchievementManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        achievements = new List<Achievement>();
+        LoadAchievements();
     }
 
     public void NotifyAchievementComplete(Achievement.AchievementType type)
@@ -48,8 +50,6 @@ public class AchievementManager : MonoBehaviour
 
     private void Start()
     {
-        achievements = new List<Achievement>();
-        LoadAchievements();
         StartCoroutine("AchievementQueueCheck");
     }
 
@@ -78,17 +78,16 @@ public class AchievementManager : MonoBehaviour
             string prefix = "Profile" + profileIndex + ",";
             PlayerPrefs.SetInt(prefix + "Achievement," + curAchievement.type, 1);
             PlayerPrefs.Save();
-            Debug.Log("Achievement Unlocked: " + curAchievement.name);
+            Debug.Log("Achievement Unlocked: " + curAchievement.isUnlocked + " " + curAchievement.profileIndex + " " + curAchievement.name);
             AchievementNotification.instance.ShowNotification("Achievement Unlocked: " + curAchievement.name + "\n" + curAchievement.description);
         }
     }
 
     public void LoadAchievements()
     {
+
         int profileIndex = ProfileManager.instance.GetProfileIndex();
         string prefix = "Profile" + profileIndex + ",";
-
-
 
         foreach (Achievement.AchievementType type in Enum.GetValues(typeof(Achievement.AchievementType)))
         {
@@ -132,10 +131,12 @@ public class AchievementManager : MonoBehaviour
 
             if (unlockedValue == 1)
             {
+                Debug.Log("hsadadere");
                 isUnlocked = true;
             }
             else
             {
+                Debug.Log("heasdafafafre2");
                 isUnlocked = false;
             }
 

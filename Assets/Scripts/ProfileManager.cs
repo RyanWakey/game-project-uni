@@ -20,10 +20,6 @@ public class ProfileManager : MonoBehaviour
         }
     }
 
-    public void Start()
-    {
-        SetProfileIndex(0);
-    }
     public void SetProfileIndex(int profileIndex)
     {
         currentProfileIndex = profileIndex;

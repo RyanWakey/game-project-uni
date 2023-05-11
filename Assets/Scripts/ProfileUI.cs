@@ -43,7 +43,7 @@ public class ProfileUI : MonoBehaviour
         timePlayedTexts[profileIndex].text = "Time Played: " + timePlayedInMinutes + " mins";
         gamesPlayedTexts[profileIndex].text = "Games Played: " + gamesPlayed;
 
-        UpdateAnAchievementsText();
+        //UpdateAnAchievementsText();
         UpdateProfileColors();
     }
 
