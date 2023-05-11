@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 // Most of the code which deals with the screen wrapping is from this tutorial - https://www.youtube.com/watch?v=1a9ag16PeFw
-// which i slightly changed for my context.
+// which I changed for my context.
 [RequireComponent(typeof(BoxCollider2D))]
 public class ScreenWrapperController : MonoBehaviour
 {
@@ -73,6 +73,7 @@ public class ScreenWrapperController : MonoBehaviour
             return worldPosition;
             }
         }
+
         public void WrapAround(Transform tr, Rigidbody2D rb2d)
         {
             Vector3 curPos = tr.position;

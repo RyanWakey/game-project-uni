@@ -23,7 +23,6 @@ public class AsteroidController : MonoBehaviour, IEntity
     private float minAsteroidSize = 12f;
     private Vector2 asteroidSizeRange = new Vector2(25f, 30f);
     private float speed = 1000.0f;
-    public Vector2 initialVelocity { get; set; }
 
     Rigidbody2D IEntity.rb2D => rb2D;
     Transform IEntity.tr => tr;
@@ -69,7 +68,6 @@ public class AsteroidController : MonoBehaviour, IEntity
     {
         float speedFactor = 15.0f / this.size;
         rb2D.AddForce(direction * speed * speedFactor);
-        initialVelocity = rb2D.velocity;
         Destroy(this.gameObject, asteroidLifeTime);
     }
 
