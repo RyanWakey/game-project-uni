@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UFOController : MonoBehaviour
+public class UFOController : MonoBehaviour, IEntity
 {
     [SerializeField] private float speed;
     [SerializeField] private LaserBeam laser;
@@ -12,19 +12,23 @@ public class UFOController : MonoBehaviour
 
 
     private Vector2 UFOSizeRange = new Vector2(15f, 20f);
-    private Rigidbody2D rb2d;
+    private Rigidbody2D rb2D;
     private Transform tr;
-   
+
+    private CommandProcessor commandProcessor;
 
     private bool canShoot = true;
     private float size;
 
+    Rigidbody2D IEntity.rb2D => rb2D;
+    Transform IEntity.tr => tr;
     private void Awake()
     {
-        rb2d = GetComponent<Rigidbody2D>();
+        rb2D = GetComponent<Rigidbody2D>();
         screenWrapper = FindObjectOfType<ScreenWrapperController>();
         tr = transform;
         size = Random.Range(UFOSizeRange.x, UFOSizeRange.y);
+        commandProcessor = GetComponent<CommandProcessor>();
     }
 
     private void Start()
@@ -38,11 +42,21 @@ public class UFOController : MonoBehaviour
         {
             StartCoroutine(ShootingCD());
         }
+
+        if (Input.GetKey(KeyCode.U))
+        {
+            commandProcessor.UndoCommand();
+        }
+        else
+        {
+            commandProcessor.RecordCommand(new UFOCommand(this));
+        }
+        
     }
 
     public void FixedUpdate()
     {
-        screenWrapper.WrapAround(this.tr, this.rb2d);
+        screenWrapper.WrapAround(this.tr, this.rb2D);
     }
 
     private void Fire()
@@ -65,7 +79,7 @@ public class UFOController : MonoBehaviour
     public void SetTrajectory(Vector3 direction)
     {
         float speedFactor = 10.0f / this.size;
-        rb2d.AddForce(direction * speed * speedFactor);
+        rb2D.AddForce(direction * speed * speedFactor);
         Destroy(this.gameObject, UFOLifeTime);
     }
 

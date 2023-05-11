@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserBeam : MonoBehaviour
+public class LaserBeam : MonoBehaviour, IEntity
 {   
     [SerializeField] private float bulletLifeTime = 0.5f;
     [SerializeField] private float speed = 1000f;
     public LaserType laserType;
     private ScreenWrapperController screenWrapper;
-    private Rigidbody2D rb2d;
+    private Rigidbody2D rb2D;
     private Transform tr;
     private SpriteRenderer spriteRenderer;
 
@@ -23,6 +23,9 @@ public class LaserBeam : MonoBehaviour
 
     public PlayerMovementController playerAchievement;
 
+    private CommandProcessor commandProcessor;
+    Rigidbody2D IEntity.rb2D => rb2D;
+    Transform IEntity.tr => tr;
     public enum LaserType
     {
         PlayerLaser = 0,
@@ -31,16 +34,17 @@ public class LaserBeam : MonoBehaviour
 
     private void Awake()
     {
-        rb2d = GetComponent<Rigidbody2D>();
+        rb2D = GetComponent<Rigidbody2D>();
         screenWrapper = FindObjectOfType<ScreenWrapperController>();
         spriteRenderer = GetComponent<SpriteRenderer>(); 
         tr = transform;
         playerAchievement = FindAnyObjectByType<PlayerMovementController>();
+        commandProcessor = GetComponent<CommandProcessor>();    
     }
 
     public void Laser(Vector3 direction, Color laserColour)
     {
-        rb2d.AddForce(direction * speed);
+        rb2D.AddForce(direction * speed);
         spriteRenderer.color = laserColour;
         Destroy(this.gameObject, bulletLifeTime);
     }
@@ -94,12 +98,19 @@ public class LaserBeam : MonoBehaviour
                Destroy(this.gameObject);   
             }
         }
-
+        if (Input.GetKey(KeyCode.U))
+        {
+            commandProcessor.UndoCommand();
+        }
+        else
+        {
+            commandProcessor.RecordCommand(new UFOCommand(this));
+        }
     }
 
     private void FixedUpdate()
     {
-        screenWrapper.WrapAround(this.tr, this.rb2d);
+        screenWrapper.WrapAround(this.tr, this.rb2D);
     }
 
     public void InAsteroidChange(bool _inAsteroid)

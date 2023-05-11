@@ -10,12 +10,7 @@ public class SpawnerController : MonoBehaviour
     [SerializeField] private float UFOSpawnRate;
     [SerializeField] private float spawnDistance;
     [SerializeField] private float enemeyAngleVariance = 10.0f;
-
-
-    private Transform tr;
-   
- 
-
+  
     private void Start()
     {
         InvokeRepeating("AsteroidSpawner", 0f, asteroidSpawnRate);

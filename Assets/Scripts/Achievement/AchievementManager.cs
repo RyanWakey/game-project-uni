@@ -53,6 +53,20 @@ public class AchievementManager : MonoBehaviour
         StartCoroutine("AchievementQueueCheck");
     }
 
+    private IEnumerator AchievementQueueCheck()
+    {
+        while (true)
+        {
+            Debug.Log(achievementQ.Count);
+            if (achievementQ.Count > 0)
+            {
+                Debug.Log("UNLOCKING ACHIEVEMENT");
+                UnlockAchievement(achievementQ.Dequeue());
+            }
+            yield return new WaitForSeconds(5.0f);
+        }
+    }
+
     private void UnlockAchievement(Achievement.AchievementType type)
     {
         Achievement curAchievement = GetAchievement(type);
@@ -66,20 +80,6 @@ public class AchievementManager : MonoBehaviour
             PlayerPrefs.Save();
             Debug.Log("Achievement Unlocked: " + curAchievement.name);
             AchievementNotification.instance.ShowNotification("Achievement Unlocked: " + curAchievement.name + "\n" + curAchievement.description);
-        }
-    }
-
-    private IEnumerator AchievementQueueCheck()
-    {
-        while (true)
-        {
-            Debug.Log(achievementQ.Count);
-            if (achievementQ.Count > 0)
-            {
-                Debug.Log("UNLOCKING ACHIEVEMENT");
-                UnlockAchievement(achievementQ.Dequeue());
-            }
-            yield return new WaitForSeconds(5.0f);
         }
     }
 

@@ -4,30 +4,38 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 
-public class AsteroidController : MonoBehaviour
+public class AsteroidController : MonoBehaviour, IEntity
 {
     [SerializeField] private Sprite[] sprites;
     [SerializeField] private float asteroidLifeTime = 80.0f;
     [SerializeField] ScreenWrapperController screenWrapper;
 
+    public static List<AsteroidController> asteroids = new List<AsteroidController>();
+    public CommandProcessor commandProcessor { get; set; }
+
 
     private SpriteRenderer sprititeRenderer;
-    private Rigidbody2D rb2d;
+    private Rigidbody2D rb2D;
     private Transform tr;
 
-    private float size;
+    public float size { get; set; }
+
     private float minAsteroidSize = 12f;
     private Vector2 asteroidSizeRange = new Vector2(25f, 30f);
     private float speed = 1000.0f;
+    public Vector2 initialVelocity { get; set; }
+
+    Rigidbody2D IEntity.rb2D => rb2D;
+    Transform IEntity.tr => tr;
 
     private void Awake()
     {
-        rb2d = GetComponent<Rigidbody2D>();
-        sprititeRenderer = rb2d.GetComponent<SpriteRenderer>();
+        rb2D = GetComponent<Rigidbody2D>();
+        sprititeRenderer = rb2D.GetComponent<SpriteRenderer>();
         screenWrapper = FindObjectOfType<ScreenWrapperController>();
         tr = transform;
         size = Random.Range(asteroidSizeRange.x, asteroidSizeRange.y);
-
+        commandProcessor = GetComponent<CommandProcessor>();
     }
 
     private void Start()
@@ -35,17 +43,33 @@ public class AsteroidController : MonoBehaviour
         sprititeRenderer.sprite = sprites[Random.Range(0,sprites.Length)];
         tr.localScale = Vector3.one * this.size;
         tr.rotation = Quaternion.Euler(0.0f, 0.0f, Random.value * 360.0f);
+        asteroids.Add(this);
     }
+
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.U))
+        {
+            commandProcessor.UndoCommand();
+        }
+        else
+        {
+            commandProcessor.RecordCommand(new AsteroidMoveCommand(this));
+        }
+
+    }
+
 
     public void FixedUpdate()
     {
-        screenWrapper.WrapAround(this.tr, this.rb2d);
+        screenWrapper.WrapAround(this.tr, this.rb2D);
     }
 
     public void SetTrajectory(Vector3 direction)
     {
         float speedFactor = 15.0f / this.size;
-        rb2d.AddForce(direction * speed * speedFactor);
+        rb2D.AddForce(direction * speed * speedFactor);
+        initialVelocity = rb2D.velocity;
         Destroy(this.gameObject, asteroidLifeTime);
     }
 
@@ -82,6 +106,7 @@ public class AsteroidController : MonoBehaviour
             int points = scoringObject.PointValue;
             GameManager.instance.AddScore(points);
         }
+        asteroids.Remove(this);
         Destroy(this.gameObject);
     }
 

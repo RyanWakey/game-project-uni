@@ -85,7 +85,6 @@ public class PlayerMovementController : MonoBehaviour, IEntity
             if (SceneManager.GetActiveScene().name == "Game")
             {
                 aliveTime += Time.deltaTime;
-                Debug.Log(aliveTime);
                 
                 if (aliveTime >= 30f && !AchievementManager.instance.GetAchievement(Achievement.AchievementType.StayAliveFor30SecondsWithoutDieing).isUnlocked)
                 {

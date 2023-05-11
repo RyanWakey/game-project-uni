@@ -244,6 +244,7 @@ GameObject:
   - component: {fileID: 2462579103151468573}
   - component: {fileID: 2462579103151468570}
   - component: {fileID: 1428922041227348484}
+  - component: {fileID: 7836743532462942953}
   - component: {fileID: 6932412429616716438}
   - component: {fileID: 7895694799825524749}
   m_Layer: 6
@@ -342,6 +343,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &7836743532462942953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2462579103151468571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5173286e54a44a04f8c50d80b5785fdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6932412429616716438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,8 +368,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletLifeTime: 1
-  laserSoundEffect: {fileID: 8300000, guid: 36c3774a4b9108943b87bad870fc3c37, type: 3}
+  speed: 1000
   laserType: 0
+  playerAchievement: {fileID: 0}
 --- !u!114 &7895694799825524749
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8066588784082793740}
   - component: {fileID: 1296371407518535126}
   - component: {fileID: 1304275904001553065}
+  - component: {fileID: 8985454960113619846}
   - component: {fileID: 5183847540298956289}
   m_Layer: 8
   m_Name: UFO
@@ -159,6 +160,18 @@ MonoBehaviour:
   shootingtimerCD: 8
   screenWrapper: {fileID: 3233769946674482983, guid: a4113fa69b7b99d4e8c49c84d9825196, type: 3}
   UFOLifeTime: 80
+--- !u!114 &8985454960113619846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3173945664010523481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5173286e54a44a04f8c50d80b5785fdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5183847540298956289
 MonoBehaviour:
   m_ObjectHideFlags: 0
