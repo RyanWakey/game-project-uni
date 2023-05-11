@@ -147,7 +147,7 @@ public class GameManager : MonoBehaviour
         else if (scene.name == "StartMenu")
         {
             player = FindAnyObjectByType<PlayerMovementController>();
-            Debug.Log("this");
+           // Debug.Log("this");
             sceneName = "StartMenu";
         }
         SceneManager.sceneLoaded -= OnSceneLoaded; 
@@ -166,10 +166,9 @@ public class GameManager : MonoBehaviour
 
     private void CheckForAchievements()
     {
-     
         if (score >= 1000 && !AchievementManager.instance.GetAchievement(Achievement.AchievementType.ReachScore1000).isUnlocked) 
         {
-            Debug.Log("this this this" + !AchievementManager.instance.GetAchievement(Achievement.AchievementType.ReachScore1000).isUnlocked);
+           // Debug.Log("this this this" + !AchievementManager.instance.GetAchievement(Achievement.AchievementType.ReachScore1000).isUnlocked);
             AchievementManager.instance.NotifyAchievementComplete(Achievement.AchievementType.ReachScore1000);
         }
         if(score >= 5000 && !AchievementManager.instance.GetAchievement(Achievement.AchievementType.ReachScore5000).isUnlocked)

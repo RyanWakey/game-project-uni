@@ -40,8 +40,9 @@ public class AchievementManager : MonoBehaviour
     {
         foreach (Achievement achievement in achievements)
         {
-            if (achievement.type == type)
+            if (achievement.type == type && achievement.profileIndex == ProfileManager.instance.GetProfileIndex())
             {
+                //Debug.Log("this has happend how many times then");
                 return achievement;
             }
         }
@@ -57,10 +58,9 @@ public class AchievementManager : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log(achievementQ.Count);
             if (achievementQ.Count > 0)
             {
-                Debug.Log("UNLOCKING ACHIEVEMENT");
+                //Debug.Log("UNLOCKING ACHIEVEMENT");
                 UnlockAchievement(achievementQ.Dequeue());
             }
             yield return new WaitForSeconds(5.0f);
@@ -78,71 +78,63 @@ public class AchievementManager : MonoBehaviour
             string prefix = "Profile" + profileIndex + ",";
             PlayerPrefs.SetInt(prefix + "Achievement," + curAchievement.type, 1);
             PlayerPrefs.Save();
-            Debug.Log("Achievement Unlocked: " + curAchievement.isUnlocked + " " + curAchievement.profileIndex + " " + curAchievement.name);
+            //Debug.Log("Achievement Unlocked: " + curAchievement.isUnlocked + " " + curAchievement.profileIndex + " " + curAchievement.name);
             AchievementNotification.instance.ShowNotification("Achievement Unlocked: " + curAchievement.name + "\n" + curAchievement.description);
         }
     }
 
     public void LoadAchievements()
     {
-
-        int profileIndex = ProfileManager.instance.GetProfileIndex();
-        string prefix = "Profile" + profileIndex + ",";
-
-        foreach (Achievement.AchievementType type in Enum.GetValues(typeof(Achievement.AchievementType)))
+        achievementQ.Clear();
+        for (int profileIndex = 0; profileIndex < 3; profileIndex++)
         {
-            string achievementName;
-            string achievementDescription;
+            string prefix = "Profile" + profileIndex + ",";
 
-            switch (type)
+            foreach (Achievement.AchievementType type in Enum.GetValues(typeof(Achievement.AchievementType)))
             {
-                case Achievement.AchievementType.StayAliveFor30SecondsWithoutDieing:
-                    achievementName = "Dodger";
-                    achievementDescription = "Stay alive for 30 seconds";
-                    break;
-                case Achievement.AchievementType.ReachScore1000:
-                    achievementName = "Getting Better!";
-                    achievementDescription = "Achieved a Score of 1000";
-                    break;
-                case Achievement.AchievementType.ReachScore5000:
-                    achievementName = "Professional";
-                    achievementDescription = "Achieved a Score of 5000";
-                    break;
-                case Achievement.AchievementType.ReachScore10000:
-                    achievementName = "Elite";
-                    achievementDescription = "Achieved a Score of 10000";
-                    break;
-                case Achievement.AchievementType.Kill10AsteroidsIn5Seconds:
-                    achievementName = "KILL KILL KILL";
-                    achievementDescription = "Kill 10 Asteroids in 5 seconds";
-                    break;
-                case Achievement.AchievementType.Reach10000scoreWithoutDieing:
-                    achievementName = "GOD-LIKE";
-                    achievementDescription = "Achieved a Score of 10000 without Dieing";
-                    break;
-                default:
-                    achievementName = "";
-                    achievementDescription = "";
-                    break;
-            }
+                string achievementName;
+                string achievementDescription;
 
-            int unlockedValue = PlayerPrefs.GetInt(prefix + "Achievement," + type.ToString(), 0);
-            bool isUnlocked;
+                switch (type)
+                {
+                    case Achievement.AchievementType.StayAliveFor30SecondsWithoutDieing:
+                        achievementName = "Dodger";
+                        achievementDescription = "Stay alive for 30 seconds";
+                        break;
+                    case Achievement.AchievementType.ReachScore1000:
+                        achievementName = "Getting Better!";
+                        achievementDescription = "Achieved a Score of 1000";
+                        break;
+                    case Achievement.AchievementType.ReachScore5000:
+                        achievementName = "Professional";
+                        achievementDescription = "Achieved a Score of 5000";
+                        break;
+                    case Achievement.AchievementType.ReachScore10000:
+                        achievementName = "Elite";
+                        achievementDescription = "Achieved a Score of 10000";
+                        break;
+                    case Achievement.AchievementType.Kill10AsteroidsIn5Seconds:
+                        achievementName = "KILL KILL KILL";
+                        achievementDescription = "Kill 10 Asteroids in 5 seconds";
+                        break;
+                    case Achievement.AchievementType.Reach10000scoreWithoutDieing:
+                        achievementName = "GOD-LIKE";
+                        achievementDescription = "Achieved a Score of 10000 without Dieing";
+                        break;
+                    default:
+                        achievementName = "";
+                        achievementDescription = "";
+                        break;
+                }
 
-            if (unlockedValue == 1)
-            {
-                Debug.Log("hsadadere");
-                isUnlocked = true;
-            }
-            else
-            {
-                Debug.Log("heasdafafafre2");
-                isUnlocked = false;
-            }
+                int unlockedValue = PlayerPrefs.GetInt(prefix + "Achievement," + type, 0);
+                bool isUnlocked = unlockedValue == 1;
 
-            achievements.Add(new Achievement(type, achievementName, achievementDescription, isUnlocked, profileIndex));
+                achievements.Add(new Achievement(type, achievementName, achievementDescription, isUnlocked, profileIndex));
+            }
         }
     }
+
 
     public int GetUnlockedAchievementCount(int profileIndex)
     {

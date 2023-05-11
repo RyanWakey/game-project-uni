@@ -53,6 +53,8 @@ public class ProfileUI : MonoBehaviour
         int profileIndex = ProfileManager.instance.GetProfileIndex();
         string prefix = "Profile" + profileIndex + ",";
 
+        //Debug.Log("profile index in this" + profileIndex);
+
         PlayerPrefs.SetInt(prefix + "HighScore", 0);
         PlayerPrefs.SetFloat(prefix + "TimePlayed", 0);
         PlayerPrefs.SetInt(prefix + "GamesPlayed", 0);
@@ -76,7 +78,6 @@ public class ProfileUI : MonoBehaviour
         highScoreTexts[profileIndex].text = "High Score: " + highScore;
         timePlayedTexts[profileIndex].text = "Time Played: " + timePlayed;
         gamesPlayedTexts[profileIndex].text = "Games Played: " + gamesPlayed;
-        UpdateAnAchievementsText();
     }
 
     public void UpdateProfileColors()
@@ -116,7 +117,9 @@ public class ProfileUI : MonoBehaviour
     {
         int totalAchievements = Enum.GetValues(typeof(Achievement.AchievementType)).Length;
         int profileIndex = ProfileManager.instance.GetProfileIndex();
+        //Debug.Log("profile index" + profileIndex);
         int unlockedCount = AchievementManager.instance.GetUnlockedAchievementCount(profileIndex);
+        //Debug.Log("unlockedcount "+unlockedCount);
         achievementsUnlockedText[profileIndex].text = "Achievements Unlocked " + unlockedCount + "/" + totalAchievements;
     }
 

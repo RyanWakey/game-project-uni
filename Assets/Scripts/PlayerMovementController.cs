@@ -90,7 +90,7 @@ public class PlayerMovementController : MonoBehaviour, IEntity
                 {
                     AchievementManager.instance.NotifyAchievementComplete(Achievement.AchievementType.StayAliveFor30SecondsWithoutDieing);
                     aliveTime = 0;
-                    Debug.Log("Stay Alive");
+                    //Debug.Log("Stay Alive");
                 }
             }
 
@@ -205,7 +205,6 @@ public class PlayerMovementController : MonoBehaviour, IEntity
     public void AsteroidDestroyed()
     {
         asteroidKillCount++;
-        Debug.Log("KILL COUNT" + asteroidKillCount);
         if (asteroidKillCount == 1)
         {
             StartCoroutine(ResetKillCountAfterDelay(5f));

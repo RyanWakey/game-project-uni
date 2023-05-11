@@ -13,7 +13,6 @@ public class AchievementNotification : MonoBehaviour
     [SerializeField] private float displayTime = 4.0f;
     [SerializeField] private float fadeTime = 1.0f;
 
-    private Coroutine notificationRoutine;
 
     private void Awake()
     {
@@ -29,7 +28,7 @@ public class AchievementNotification : MonoBehaviour
 
     public void ShowNotification(string notification)
     {
-        notificationRoutine = StartCoroutine(ShowNotificationRoutine(notification));
+        StartCoroutine(ShowNotificationRoutine(notification));
     }
 
     private IEnumerator ShowNotificationRoutine(string notification)
